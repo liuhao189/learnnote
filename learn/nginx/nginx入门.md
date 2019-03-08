@@ -157,8 +157,8 @@ proxy_pass指令：
 该指令是反向代理的基本指令，用于设置代理服务器的协议和地址。对于一个client的请求，proxy_pass指令通过以下方式进行uri的转发：
 
 ```bash
-location /mpc/ {
-    proxy_pass https://mpc.meituan.com/;
+location /yyy/ {
+    proxy_pass https://subdomain.domain.com/;
     proxy_hide_header X-Amz-Id-2;
 }
 ```
@@ -174,7 +174,7 @@ location /mpc/ {
 proxy_pass_header,filed 参数是http所有的header的名字。
 
 
-    该指令用于特定的http header从proxy server传回给client。默认情况下有些header是不会回传给client的。moren情况下，不会回传data,server,x-pad,x-accel-等
+    该指令用于特定的http header从proxy server传回给client。默认情况下有些header是不会回传给client的。默认情况下，不会回传data,server,x-pad,x-accel-等
 
 proxy_hide_header指令，用于限定哪些header不回传给client。
 

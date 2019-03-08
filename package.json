@@ -1,0 +1,23 @@
+{
+  "name": "learnnote",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liuhao189/learnnote.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/liuhao189/learnnote/issues"
+  },
+  "homepage": "https://github.com/liuhao189/learnnote#readme",
+  "devDependencies": {
+    "inquirer": "^6.2.2"
+  }
+}
