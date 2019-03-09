@@ -56,3 +56,35 @@ Question
 
 type: string, 默认为input，可以包含input, confirm, list, rawlist, expand, checkbox, password,editor
 
+name: string, answers中的属性名，如果包含“.”，会创建子对象。
+
+message:string|Function问题名称，如果是一个函数，第一个参数会是当前会话的回答。
+
+default:string|number|boolean|array|function, 默认值，函数第一个参数会是当前会话的回答。
+
+choices:array|function，选择项数组或返回选择项数组的函数，选项可以是字符串，包含name、short和value的对象。
+
+validate:function，接受用户的输入和会话内回答对象，校验通过返回true，校验失败返回message。
+
+filter:function，接受用户输入，返回转换后的值。
+
+transformer:Function, 接受用户输入，会话回答对象和选项，返回展示信息给用户。
+
+when:function,boolean，接受用户的输入，返回是否避过这个问题。
+
+pageSize: 展示的条数。
+
+prefix: message前缀
+
+suffix: message后缀
+
+default，choices，validate，filter，when都可以是异步函数，返回Promise或者使用this.async。
+
+new inquirer.Separator() 可以加到choices对象中，作为项的分隔符。
+
+## 用户界面和布局
+
+除了上文的内容，inquirer提供一些基本文本UI。
+
+
+
