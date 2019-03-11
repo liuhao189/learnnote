@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/liuhao189/learnnote#readme",
   "devDependencies": {
-    "inquirer": "^6.2.2"
+    "inquirer": "^6.2.2",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3"
   }
 }

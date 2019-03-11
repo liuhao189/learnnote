@@ -1,0 +1,23 @@
+{
+    "name": "alpha_0cf782b00068fc48331f",
+    "content": {
+        "./alpha.js": {
+            "id": 1,
+            "buildMeta": {
+                "exportsType": "namespace",
+                "providedExports": [
+                    "default"
+                ]
+            }
+        },
+        "./a.js": {
+            "id": 2,
+            "buildMeta": {
+                "exportsType": "namespace",
+                "providedExports": [
+                    "default"
+                ]
+            }
+        }
+    }
+}

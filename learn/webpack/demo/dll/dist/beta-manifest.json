@@ -1,0 +1,23 @@
+{
+    "name": "beta_0cf782b00068fc48331f",
+    "content": {
+        "./beta.js": {
+            "id": 4,
+            "buildMeta": {
+                "exportsType": "namespace",
+                "providedExports": [
+                    "default"
+                ]
+            }
+        },
+        "./b.js": {
+            "id": 5,
+            "buildMeta": {
+                "exportsType": "namespace",
+                "providedExports": [
+                    "default"
+                ]
+            }
+        }
+    }
+}
