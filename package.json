@@ -21,5 +21,8 @@
     "inquirer": "^6.2.2",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3"
+  },
+  "dependencies": {
+    "express": "^4.16.4"
   }
 }
