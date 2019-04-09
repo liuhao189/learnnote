@@ -21,7 +21,9 @@ function testRoutes(url, method) {
     });
 }
 
-
+['get', 'post', 'put', 'delete', 'header', 'options'].forEach((metod) => {
+    testRoutes('/allmethod',metod);
+});
 testRoutes('/', 'post');
 testRoutes('/user', 'put');
 testRoutes('/users/1', 'delete');
