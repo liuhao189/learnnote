@@ -1,7 +1,43 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+const birds = require('./birdRoute');
+const myMiddleWareFactory = require('./configMiddleWare');
 
+const myLogger = function (req, res, next) {
+    console.log('Logged!');
+    next();
+}
+
+const requestTime = (req, res, next) => {
+    req.requestTime = Date.now();
+    next();
+}
+app.use(myMiddleWareFactory({ name: 'learn', age: 99 }));
+app.use(requestTime);
+app.use('/birds', birds);
+app.use(myLogger);
+
+app.get('/reporttime', (req, res) => {
+    let responseTxt = "Hello World!<br/>";
+    responseTxt += `<samll>Requested at ${req.requestTime} !</small>`;
+    res.send(responseTxt);
+});
+
+app.get('/reportoption', (req, res) => {
+    let responseTxt = "Hello World!<br/>";
+    responseTxt += `<samll>Requested options is  ${JSON.stringify(req.options)} !</small>`;
+    res.send(responseTxt);
+});
+
+app.route('/book').get((req, res) => {
+    res.send('Get a random book!')
+}).post((req, res) => {
+    res.send('Add a book!');
+}).put((req, res) => {
+    res.send('Update the book!')
+});
+//
 app.get('/example/b', function (req, res, next) {
     console.log('The response will be sent by the next function...');
     setTimeout(() => {
@@ -91,3 +127,4 @@ app.use('/store', express.static(staticBasePath + '\\imgs'));
 app.use('/store', express.static(staticBasePath + '\\scripts'));
 
 app.listen(3000, () => { console.log('Example app listening on port 3000!') });
+
