@@ -10,7 +10,9 @@
 </head>
 
 <body>
-    <div class="container" style="width:600px;height:400px;">
+    <section>
+        <div class="container" style="width:600px;height:400px;"></div>
+    </section>
     </div>
     <script>
         function getRandomNum() {
@@ -63,6 +65,31 @@
         };
         myChart.setOption(option);
     </script>
+    <section>
+        <div id="evCharts" style="width:600px;height:600px;">
+        </div>
+        <script>
+            let sources = [['年龄', '收入']];
+            for (let i = 0; i < 10; ++i) {
+                sources.push([22 + i, Math.floor(20000 + i * 1000 + Math.random() * 100)]);
+            }
+            let evCharts = echarts.init(document.querySelector('#evCharts'));
+            let evOption = {
+                dataset: {
+                    source: sources
+                },
+                xAxis: { type: 'category' },
+                yAxis: {},
+                tooltip: {},
+                series: [{ type: 'bar' }]
+            };
+            evCharts.setOption(evOption);
+            //
+            evCharts.on('click', { dataIndex: 9 }, (params) => {
+                window.open('https://cn.bing.com/search?q=' + params.name)
+            });
+        </script>
+    </section>
 </body>
 
 </html>
