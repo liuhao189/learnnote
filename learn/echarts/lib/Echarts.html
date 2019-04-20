@@ -1,34 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+<!-- saved from url=(0022)http://localhost:7823/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Echarts</title>
-    <script src="./lib/echarts.js"></script>
+    <script src="./Echarts_files/echarts.js"></script>
 </head>
 
 <body>
     <style>
         section {
             margin-bottom: 20px;
-            position: relative;
-        }
-
-        section:after {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 1px;
-            border-bottom: 2px dotted #c5bfbf;
-            content: ''
         }
     </style>
     <section>
-        <div class="container" style="width:600px;height:400px;"></div>
+        <div class="container" style="width: 600px; height: 400px; -webkit-tap-highlight-color: transparent; user-select: none; position: relative;" _echarts_instance_="ec_1555776793605"><div style="position: relative; overflow: hidden; width: 600px; height: 400px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="1200" height="800" style="position: absolute; left: 0px; top: 0px; width: 600px; height: 400px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div></div></div>
     </section>
-    </div>
+    
     <script>
         function getRandomNum() {
             return Math.floor(300 + Math.random() * 100);
@@ -81,8 +70,7 @@
         myChart.setOption(option);
     </script>
     <section>
-        <div id="evCharts" style="width:600px;height:600px;">
-        </div>
+        <div id="evCharts" style="width: 600px; height: 600px; -webkit-tap-highlight-color: transparent; user-select: none; position: relative;" _echarts_instance_="ec_1555776793606"><div style="position: relative; overflow: hidden; width: 600px; height: 600px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="1200" height="1200" style="position: absolute; left: 0px; top: 0px; width: 600px; height: 600px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div></div></div>
         <script>
             let sources = [['年龄', '收入']];
             for (let i = 0; i < 10; ++i) {
@@ -106,7 +94,7 @@
         </script>
     </section>
     <section>
-        <div id="dragChart" style="width:600px;height:400px"></div>
+        <div id="dragChart" style="width: 600px; height: 400px; -webkit-tap-highlight-color: transparent; user-select: none; position: relative;" _echarts_instance_="ec_1555776793607"><div style="position: relative; overflow: hidden; width: 600px; height: 400px; padding: 0px; margin: 0px; border-width: 0px; cursor: default;"><canvas data-zr-dom-id="zr_0" width="1200" height="800" style="position: absolute; left: 0px; top: 0px; width: 600px; height: 400px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div style="position: absolute; display: none; border-style: solid; white-space: nowrap; z-index: 9999999; transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s, top 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s; background-color: rgba(50, 50, 50, 0.7); border-width: 0px; border-color: rgb(51, 51, 51); border-radius: 4px; color: rgb(255, 255, 255); font: 14px/21px sans-serif; padding: 5px; left: 213.333px; top: 235.556px; pointer-events: none;">X:-50.00<br>Y:10.00</div></div>
         <script>
             let dragChart = echarts.init(document.querySelector('#dragChart'));
             let symbolSize = 20;
@@ -197,7 +185,7 @@
         </script>
     </section>
     <section>
-        <div id="calendarChart" style="width:100%;height:400px;"></div>
+        <div id="calendarChart" style="width: 100%; height: 400px; -webkit-tap-highlight-color: transparent; user-select: none;" _echarts_instance_="ec_1555776793608"><div style="position: relative; overflow: hidden; width: 1409px; height: 400px; padding: 0px; margin: 0px; border-width: 0px; cursor: default;"><canvas data-zr-dom-id="zr_0" width="2818" height="800" style="position: absolute; left: 0px; top: 0px; width: 1409px; height: 400px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div></div>
         <script>
             let calendarChart = echarts.init(document.querySelector('#calendarChart'));
             //
@@ -224,31 +212,14 @@
                 },
                 calendar: {
                     range: '2017',
-                    itemStyle: {
-                        color: '#ffffff',
-                        borderColor: 'red',
-                        borderType: 'dotted',
-                        shadowBlur: 10,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                    },
-                    dayLabel: {
-                        firstDay: 1,
-                        nameMap: ['日', '一', '二', '三', '四', '五', '六']
-                    },
-                    monthLabel: {
-                        nameMap: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'].map((chNum) => chNum + '月')
-                    },
-                    // cellSize: 20,
-                    // orient: 'vertical',
-                    // width: 1000,
-                    // height: 280,
+                    cellSize: 20,
+                    orient: 'vertical',
+                    width: 1000,
+                    height: 280,
                     splitLine: {
-                        // show: false,
-                        // width: 5,
-                        lineStyle: {
-                            width: 2,
-                            type: 'dashed'
-                        }
+                        show: false,
+                        width: 5,
+                        type: 'dashed'
                     }
                 },
                 series: [{
@@ -260,52 +231,6 @@
             calendarChart.setOption(calendarOption);
         </script>
     </section>
-    <section>
-        <div id="calendarChart2" style="width:100%;height:500px"></div>
-        <script>
-            let calendarChart2 = echarts.init(document.querySelector('#calendarChart2'));
-            let calendarOption2 = {
-                title: {
-                    top: 30,
-                    left: 'center',
-                    text: '2017年刘浩每天的步数'
-                },
-                tooltip: {},
-                visualMap: {
-                    min: 0,
-                    max: 10000,
-                    type: 'piecewise',
-                    orient: 'horizontal',
-                    left: 'center',
-                    top: 65,
-                    textStyle: {
-                        color: '#000'
-                    }
-                },
-                calendar: {
-                    top: 120,
-                    left: 30,
-                    right: 30,
-                    cellSize: ['auto', 13],
-                    range: '2017',
-                    itemStyle: {
-                        normal: {
-                            borderWidth: .5
-                        }
-                    },
-                    yearLabel: {
-                        show: false
-                    }
-                },
-                series: {
-                    type: 'heatmap',
-                    coordinateSystem: 'calendar',
-                    data: getVirtulData(2017)
-                }
-            };
-            calendarChart2.setOption(calendarOption2);
-        </script>
-    </section>
-</body>
 
-</html>
+
+</body></html>
