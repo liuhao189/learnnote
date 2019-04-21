@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible"
+        content="ie=edge">
+    <title>Custom Series</title>
+    <script src="./lib/echarts.js"></script>
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        section {
+            margin-bottom: 20px;
+            position: relative;
+            min-height: 100px;
+        }
+
+        section:last-child {
+            margin-bottom: 0;
+        }
+
+        section:not(:last-child):after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            border-bottom: 1px dotted #ddd;
+            width: 100%;
+            border-bottom: 2px dotted #ddd;
+        }
+    </style>
+    <script>
+    </script>
+</head>
+
+<body>
+    <section>
+        <div id="customChart"
+            style="width:100%;height:500px"></div>
+        <script>
+            //
+            let data = [], dataCount = 10, startTime = +new Date();
+            let categories = ['categoryA', 'categoryB', 'categoryC'];
+            let types = [
+                { name: 'JS Heap', color: '#7b9ce1' },
+                { name: 'Documents', color: '#bd6d6c' },
+                { name: 'Nodes', color: '#75d874' },
+                { name: 'Listeners', color: '#e0bc78' },
+                { name: 'GPU Memory', color: '#dc77dc' },
+                { name: 'GPU', color: '#72b362' }
+            ];
+            //
+            echarts.util.each(categories, function (category, index) {
+                let baseTime = startTime;
+                for (let i = 0; i < dataCount; ++i) {
+                    let typeItem = types[Math.round(Math.random() * (types.length - 1))];
+                    let duration = Math.round(Math.random() * 10000);
+                    data.push({
+                        name: typeItem.name,
+                        value: [
+                            index, baseTime, baseTime += duration, duration
+                        ],
+                        itemStyle: {
+                            normal: {
+                                color: typeItem.color
+                            }
+                        }
+                    });
+                    baseTime += Math.round(Math.random() * 2000);
+                }
+            });
+            //
+            let customChart = echarts.init(document.querySelector('#customChart'));
+            let customOption = {
+                tooltip: {},
+                title: {
+                    title: 'Profile',
+                    left: 'center'
+                },
+                grid: {
+                    height: 300
+                },
+                dataZoom: {
+                    aAxisIndex: 0,
+                    filterMode: 'weakFilter'
+                },
+                xAxis: {
+                    min: startTime,
+                    scale: true,
+                    axisLabel: {
+                        formatter: function (val) {
+                            return Math.max(0, val - startTime) + 'ms';
+                        }
+                    }
+                },
+                yAxis: {
+                    data: categories
+                },
+                series: [{
+                    data: data,
+                    itemStyle: {
+                        normal: {
+                            opacity: .8
+                        }
+                    },
+                    encode: {
+                        x: [1, 2],
+                        y: 0,
+                        tooltip: [1, 2]
+                    },
+                    dimensions: [null, '开始时间', '结束时间'],
+                    type: 'custom',
+                    renderItem: function (params, api) {
+                        let categoryIndex = api.value(0);
+                        let startPoint = api.coord([api.value(1), categoryIndex]);
+                        let endPoint = api.coord([api.value(2), categoryIndex]);
+                        let height = api.size([0, 1])[1] * .6;
+                        let rectShape = echarts.graphic.clipRectByRect({
+                            x: startPoint[0],
+                            y: startPoint[1] - height / 2,
+                            width: endPoint[0] - startPoint[0],
+                            height: height
+                        }, {
+                                x: params.coordSys.x,
+                                y: params.coordSys.y,
+                                width: params.coordSys.width,
+                                height: params.coordSys.height
+                            });
+                        return rectShape && {
+                            type: 'rect',
+                            name: "aaaa",
+                            info: { name: 'cccc' },
+                            shape: rectShape,
+                            style: api.style()
+                        }
+                    }
+                }]
+            };
+            customChart.setOption(customOption);
+            customChart.on('click', { element: 'aaaa' }, (params) => {
+                console.log(params.info);
+            })
+        </script>
+    </section>
+    <section></section>
+</body>
+
+</html>
