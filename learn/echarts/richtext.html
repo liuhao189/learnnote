@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible"
+        content="ie=edge">
+    <title>Rich Text</title>
+    <script src="./lib/echarts.js"></script>
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        section {
+            margin-bottom: 20px;
+            position: relative;
+            min-height: 100px;
+        }
+
+        section:last-child {
+            margin-bottom: 0;
+        }
+
+        section:not(:last-child):after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            border-bottom: 1px dotted #ddd;
+            width: 100%;
+            border-bottom: 2px dotted #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div id="richTextContainer"
+            style="width:100%;height:500px;"></div>
+    </section>
+    <script>
+        let richTextChart = echarts.init(document.querySelector('#richTextContainer'));
+        let rtOption = {
+            xAxis: {
+                axisLabel: { show: false },
+                axisLine: { show: false },
+                splitLine: { show: false },
+                axisTick: { show: false },
+                min: -1,
+                max: 1
+            },
+            yAxis: {
+                axisLabel: { show: false },
+                axisLine: { show: false },
+                splitLine: { show: false },
+                axisTick: { show: false },
+                min: -1,
+                max: 1
+            },
+            series: [{
+                type: 'scatter',
+                data: [[0, 0]],
+                symbolSize: 1,
+                label: {
+                    normal: {
+                        show: true,
+                        formatter: [
+                            'The whole box is a {term|Text Block}, with',
+                            'red border and gray background.',
+                            '{fregment1|A Text Fregment} {fregment2|Another Text Fregment}',
+                            'Text fregments can be customized.'
+                        ].join('\n'),
+                        backgroundColor: '#eee',
+                        borderColor: 'rgb(199,86,83)',
+                        borderWidth: 2,
+                        borderRadius: 5,
+                        padding: 10,
+                        color: '#000',
+                        fontSize: 14,
+                        shadowBlur: 3,
+                        shadowColor: '#888',
+                        shadowOffsetX: 0,
+                        shadowOffsetY: 3,
+                        lineHeight: 30,
+                        rich: {
+                            term: {
+                                fontSize: 18,
+                                color: 'rgb(199,86,83)'
+                            },
+                            fregment1: {
+                                backgroundColor: '#000',
+                                color: 'yellow',
+                                padding: 5
+                            },
+                            fregment2: {
+                                backgroundColor: '#339911',
+                                color: '#fff',
+                                borderRadius: 15,
+                                padding: 5
+                            }
+                        }
+                    }
+                }
+            }]
+        };
+        richTextChart.setOption(rtOption);
+    </script>
+    <section>
+        <div id="pieChart"
+            style="height:400px;width:100%;"></div>
+        <script>
+            let pieChart = echarts.init(document.querySelector('#pieChart'));
+            let pieOption = {
+                tooltip: {},
+                legend: {},
+                dataset: {
+                    source: [
+                        ['一级大类', '占比'],
+                        ['蔬菜', 40],
+                        ['水果', 40],
+                        ['百货', 20]
+                    ]
+                },
+                series: [
+                    {
+                        type: 'pie',
+                        label: {
+                            formatter: [`{a|这段文本采用样式a}`, `{b|这段文本采用样式b}{x|这段样式x}`].join('\n'),
+                            rich: {
+                                a: {
+                                    color: 'red',
+                                    lineHeight: 10
+                                },
+                                b: {
+                                    color: 'green',
+                                    backgroundColor: {
+                                        'image': 'imgs/1.jpg'
+                                    },
+                                    height: 40
+                                },
+                                x: {
+                                    fontSize: 18,
+                                    fontFamily: "Microsoft YaHei",
+                                    borderRadius: 4
+                                }
+                            }
+                        }
+                    }
+                ]
+            };
+            pieChart.setOption(pieOption);
+        </script>
+    </section>
+</body>
+
+</html>
