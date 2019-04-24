@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible"
+        content="ie=edge">
+    <title>API</title>
+    <script src="./lib/echarts.js"></script>
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        section {
+            margin-bottom: 20px;
+            position: relative;
+            min-height: 100px;
+        }
+
+        section:last-child {
+            margin-bottom: 0;
+        }
+
+        section:not(:last-child):after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            border-bottom: 1px dotted #ddd;
+            width: 100%;
+            border-bottom: 2px dotted #ddd;
+        }
+    </style>
+    <script>
+    </script>
+</head>
+
+<body>
+    <section>
+        <div id="apiChart"
+            style="height:400px;width:100%;"></div>
+        <script>
+            let apiChartEl = document.querySelector('#apiChart');
+            let chart = echarts.init(apiChartEl, null, {
+                width: 400,
+                height: 400
+            });
+            let option = {
+                dataset: {
+                    source: [
+                        ['一级大类', '占比'],
+                        ['粮油', 40],
+                        ['大米', 35],
+                        ['面粉', 25]
+                    ]
+                },
+                series: [{
+                    type: 'pie'
+                }]
+            };
+            chart.setOption(option);
+        </script>
+    </section>
+
+    <section>
+        <div id="apiChart2"
+            style="height:400px;width:100%;"></div>
+        <script>
+            let apiChartEl2 = document.querySelector('#apiChart2');
+            let chart2 = echarts.init(apiChartEl2, null, {
+                width: 400,
+                height: 400
+            });
+            let option2 = {
+                legend: {},
+                tooltip: {},
+                dataset: {
+                    source: [
+                        ['一级大类', '占比'],
+                        ['粮油', 40],
+                        ['大米', 35],
+                        ['面粉', 25]
+                    ]
+                },
+                series: [{
+                    type: 'pie'
+                }]
+            };
+            chart2.setOption(option2);
+            chart.group = 'group1';
+            chart2.group = 'group1';
+            echarts.connect('group1');
+            setTimeout(() => {
+                echarts.disconnect('group1');
+                console.log(chart2 === echarts.getInstanceByDom(apiChartEl2))
+                // echarts.dispose(chart);
+                // echarts.dispose(apiChartEl2);
+            }, 3000);
+        </script>
+    </section>
+
+    <section>
+        <div id="mapChart"
+            style="height:900px;width:100%;"></div>
+        <script>
+            fetch('./lib/HK.json').then(response => {
+                return response.json()
+            }).then((json) => {
+                echarts.registerMap('HK', json);
+                initMapChart();
+            })
+            function initMapChart() {
+                let mapChartEl = document.querySelector('#mapChart');
+                let mapChart = echarts.init(mapChartEl);
+                let mapOption = {
+                    visualMap: {
+                        min: 800,
+                        max: 50000,
+                        text: ['High', 'Low'],
+                        realtime: false,
+                        calculable: true,
+                        inRange: {
+                            color: ['lightskyblue', 'yellow', 'orangered']
+                        }
+                    },
+                    legend: {},
+                    tooltip: {},
+                    dataset: {
+                        source: [
+                            ['区域', '人口密度'],
+                            ["中西区", 20057.34], ["湾仔", 15477.48], ["东区", 31686.1], ["南区", 6992.6], ["油尖旺", 44045.49], ["深水埗", 40689.64], ["九龙城", 37659.78], ["黄大仙", 45180.97], ["观塘", 55204.26], ["葵青", 21900.9], ["荃湾", 4918.26], ["屯门", 5881.84], ["元朗", 4178.01], ["北区", 2227.92], ["大埔", 2180.98], ["沙田", 9172.94], ["西贡", 3368], ["离岛", 806.98]
+                        ]
+                    },
+                    series: [{
+                        type: 'map',
+                        mapType: 'HK',
+                        label: { show: true },
+                        nameMap: {
+                            'Central and Western': '中西区',
+                            'Eastern': '东区',
+                            'Islands': '离岛',
+                            'Kowloon City': '九龙城',
+                            'Kwai Tsing': '葵青',
+                            'Kwun Tong': '观塘',
+                            'North': '北区',
+                            'Sai Kung': '西贡',
+                            'Sha Tin': '沙田',
+                            'Sham Shui Po': '深水埗',
+                            'Southern': '南区',
+                            'Tai Po': '大埔',
+                            'Tsuen Wan': '荃湾',
+                            'Tuen Mun': '屯门',
+                            'Wan Chai': '湾仔',
+                            'Wong Tai Sin': '黄大仙',
+                            'Yau Tsim Mong': '油尖旺',
+                            'Yuen Long': '元朗'
+                        }
+                    }],
+
+                };
+                mapChart.setOption(mapOption);
+            }
+        </script>
+    </section>
+</body>
+
+</html>
