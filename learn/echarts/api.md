@@ -102,7 +102,7 @@ group:string|number
 
 ## setOption
 
-设置图表实例的配置项以及数据，万能接口，所有参数和数据的修改都可以通过setOption完成。ECharts会合并新的参数和数据，然后刷新图标。如果开启动画的话，ECharts找到两组数据之间的差异然后通过合适的动画去表现数据的变化。
+设置图表实例的配置项以及数据，万能接口，所有参数和数据的修改都可以通过setOption完成。ECharts会合并新的参数和数据，然后刷新图表。如果开启动画的话，ECharts找到两组数据之间的差异然后通过合适的动画去表现数据的变化。
 
 ```js
 setOption(option:Object,notMerge:boolean,lazyUpdate?:boolean)
@@ -111,7 +111,7 @@ setOption(option:Object,opts?:Object)
 
 notMerge可选，是否不跟之前设置的option进行合并，默认为false，即合并。
 
-lazyUpdate可选，在设置完option后是否不利己更新图标，默认为false。
+lazyUpdate可选，在设置完option后是否不立即更新图标，默认为false。
 
 slient，可选，阻止调用setOption时抛出事件，默认为false，即抛出事件。
 
