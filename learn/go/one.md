@@ -1,8 +1,8 @@
 # go语言入门
 
-Go是一个开源的编程语言，它能让构造简单，可靠且高效的软件变得容易。Go支持Linux，Mac和Windows等系统下的二进制发行版。
+Go是一个开源的编程语言，它能让构造简单，可靠且高效的软件变得容易。Go有Linux，Mac和Windows等系统下的二进制发行版。
 
-Go语言具有很强的表达能力，它简洁，清晰而高效。得益于其并发机制，用它编写的程序能够非常有效地利用多核与联网的计算机。其新颖的类型系统则使程序结构变得灵活而模块化。Godiam编译成机器码不仅非常迅速，还具有方便的垃圾收集机制和强大的运行时反射机制。
+Go语言具有很强的表达能力，它简洁，清晰而高效。得益于其并发机制，用它编写的程序能够非常有效地利用多核与联网的计算机。其新颖的类型系统则使程序结构变得灵活而模块化。Go代码编译成机器码不仅非常迅速，还具有方便的垃圾收集机制和强大的运行时反射机制。
 
 快速的，静态类型的编译型语言，感觉却像动态类型的解释型语言。
 
@@ -58,3 +58,50 @@ func init(){
 	fmt.Println("Init!")
 }
 ```
+
+# go语言基础语法
+
+## 行分隔符
+
+Go程序中，一行代表一个语句结束，每个语句不需要以分号;结尾。这些工作都将由Go编辑器自动完成。多个语句写在同一行，必须以分号区分。
+
+```go
+package main
+
+import "fmt"
+
+func init(){
+	fmt.Println("Init func");fmt.Println("The second line!")
+}
+
+func main(){
+	fmt.Println("Main func!");
+}
+```
+
+## 注释
+
+注释不会被编译，每一个包应该有相关注释。单行注释是最常见的注释形式，可以在任何地方以//开头的单行注释。多行注释也叫块注释，均以/*开头，以*/结尾。
+
+## 标识符
+
+标识符用来命名变量，类型等程序实体。一个标识符实际上就是一个或多个字母，下滑先组成的序列，第一个字符必须是字母或下划线。
+
+## 关键字
+
+break；default；func；interface；select；case；defer；go；map；struct；chan；else；goto；package；switch；const；fallthrough；if；range；type；continue；for；import；return；var；
+
+预定义标识符：append，bool，byte；cap，close，complex，complex64，complex128，unit16，copy，false，float32，float64，imag，int，int8，int16，unit32，int32，int64，iota，len，make，new，nil，panic，uint64，
+print，println，rea，recover，string，true，uint，uint8，uintptr。
+
+## 语言的空格
+
+Go语言中变量的声明必须使用空格隔开。语句中适当使用空格能让程序更易阅读。
+
+```go
+var age int;
+```
+
+# go语言数据类型
+
+go编程语言中，数据类型用于声明函数和变量。数据类型的出现是为了把数据分成所需内存大小不同的数据，编程的时候需要用大数据的时候才需要申请大内存，可以充分利用内存。
