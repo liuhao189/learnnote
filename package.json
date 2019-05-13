@@ -18,11 +18,19 @@
   },
   "homepage": "https://github.com/liuhao189/learnnote#readme",
   "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "html-webpack-plugin": "^3.2.0",
     "inquirer": "^6.2.2",
+    "vue-loader": "^15.7.0",
+    "vue-template-compiler": "^2.6.10",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.2.3"
+    "webpack-cli": "^3.3.2"
   },
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "vue": "^2.6.10",
+    "vue-router": "^3.0.6",
+    "vue-server-renderer": "^2.6.10"
   }
 }
