@@ -56,7 +56,7 @@ const render = require('vue-server-renderer').createRenderer({
 render.renderToString(app).then(html => {
     res.end(html);
 }).catch(err => {
-    res.status(500).end('Internal Server Error!s');
+    res.status(500).end('Internal Server Error!');
 });
 ```
 
@@ -82,13 +82,13 @@ render.renderToString(app, context)
 
 在纯客户端应用程序中，每个用户会在他们各自的浏览器中使用新的应用程序实例。对于服务器端渲染，我们也希望如此，每个请求都是全新的，独立的应用程序实例，以便不会有交叉请求造成的状态污染。
 
-将在服务器上预取数据，开始渲染时，我们的应用程序就已经解析完成其状态。将数据进行响应式的过程在服务器上是多余的，默认情况下禁用。
+将在服务器上预取数据prefetch data，开始渲染时，我们的应用程序就已经解析完成其状态。将数据进行响应式的过程在服务器上是多余的，默认情况下禁用。
 
 ## 组件生命周期钩子函数
 
 没有动态更新，所有的生命周期钩子函数中，只有beforeCreate和create会在服务器端渲染过程中被调用。其它生命周期钩子函数中的代码beforeMount，mounted只会在客户端执行。
 
-避免beforeCreate和create生命周期时产生全局副作用的代码。使用setInterval。副作用代码移动到beforeMount或mounted生命周期中。
+避免beforeCreate和create生命周期时产生全局副作用的代码。使用setInterval。副作用代码移动到beforeMount或mounted生命周期中。服务器端和客户端执行代码的差异性。
 
 ## 访问特定平台的API
 
@@ -108,7 +108,7 @@ render.renderToString(app, context)
 
 当编写纯客户端代码时，习惯在每次在新的上下文中对代码进行取值。Nodejs是一个长期运行的进程，如果创建一个单例对象，它将在每个传入的请求之间共享。
 
-我们不应该直接创建一个应用程序实例，而是应该暴露一个可以重复执行的工程函数。同样的规则也适用于router，store和event bus实例，不应该直接从模块导出并将其导入到应用程序中，而是需要在createApp中创建一个新的实例，并从根Vue实例注入。 
+我们不应该直接创建一个应用程序实例，而是应该暴露一个可以重复执行的工厂函数。同样的规则也适用于router，store和event bus实例，不应该直接从模块导出并将其导入到应用程序中，而是需要在createApp中创建一个新的实例，并从根Vue实例注入。 
 
 ```js
 function cereateApp(context) {
@@ -127,7 +127,7 @@ function cereateApp(context) {
 
 通常Vue应用程序是由webpack和vue-loader构建，并且许多webpack特定功能不能直接Node.js中运行。
 
-尽管Nodejs最新版本能够完全支持ES205特性，还是需要转译客户端代码以适应老版浏览器。
+尽管Nodejs最新版本能够完全支持ES2015特性，还是需要转译客户端代码以适应老版浏览器。还是需要转译客户端代码以适应老版浏览器。
 
 基本的步骤是，对于客户端应用程序和服务器应用程序，都要使用webpack打包，服务器需要服务器bundle用于服务器端渲染，而客户端bundle会发送给浏览器，用于混合静态标记。
 
@@ -147,11 +147,11 @@ src
 --entry-client.js
 --entry-server.js 
 ```
-app.js是我们应用程序的通用entry，在纯客户端应用程序中，将在此文件中创建根Vue实例，并直接挂在到DOM。但是，对于服务器渲染SSR，责任转译到纯客户端entry文件，app.js简单地使用export导出一个createApp函数。
+app.js是我们应用程序的通用entry，在纯客户端应用程序中，将在此文件中创建根Vue实例，并直接挂在到DOM。但是，对于服务器渲染SSR，责任转移到纯客户端entry文件，app.js简单地使用export导出一个createApp函数。
 
 entry-client.js只需创建应用程序，并且将其挂在到DOM中。
 
-entry-server.js每次渲染中重复调研此函数。除了创建和返回应用程序实例之外，不会做太多事情。稍后将在此执行服务器路由匹配和数据预趣逻辑。
+entry-server.js每次渲染中重复调用此函数。除了创建和返回应用程序实例之外，不会做太多事情。稍后将在此执行服务器路由匹配和数据预取逻辑。
 
 ```js
 import Vue from 'vue';
@@ -222,3 +222,200 @@ export default context => {
 应用程序的代码分割或惰性加载，有助于减少浏览器在初始渲染中下载的资源体积，可以极大地改善大体积bundle的可交互时间。
 在Vue2.5以下的版本中，服务器端渲染时异步组件只能用在路由组件上，2.5+的版本中，得益于核心算法的升级，异步组件现在可以用在应用的任何地方。
 
+# 数据预取和状态
+
+## 数据预取存储容器Data Store
+
+在服务器端渲染期间，我们本质上是在渲染我们应用程序的快照，所以如果应用程序依赖于一些异步数据，那么在开始渲染过程之前，需要先预取和解析好这些数据。
+
+另一个需要关注的问题是在客户端，在挂载到客户端应用程序之前，需要获取到与服务器端应用程序完全相同的数据。否则-客户端应用程序会因为使用与服务器端应用程序不同的状态，然后导致混合失败。
+
+为了解决这个问题，获取的数据需要位于视图组件之外，放置在专门的数据预取存储容器或状态容器中。服务器端，可以在渲染之前预取数据，并将数据填充到store中。html中序列化和内置预置状态，挂载到客户端应用程序之前，可以直接从store获取到内联预置状态。
+
+为此，将使用官方状态管理库Vuex。
+
+```js
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+Vue.use(Vuex);
+
+import { fetchItem } from './api';
+
+export function createStore() {
+    return new Vuex.Store({
+        state: {
+            items: {}
+        },
+        actions: {
+            fetchItem({ commit }, id) {
+                return fetchItem(id).then(item => {
+                    commit('setItem', { id, item })
+                })
+            }
+        },
+        mutations: {
+            setItem(state, { id, item }) {
+                Vue.set(state.items, id, item);
+            }
+        }
+    });
+}
+```
+
+## 带有逻辑配置的组件
+
+需要通过访问路由，来决定获取哪部分数据-这也决定了哪些组件需要渲染。事实上，给定路由所需的数据，也是在该路由上渲染组件时所需的数据。
+
+将在路由组件上暴露出一个自定义静态函数asyncData，此函数会在组件实例化之前调用，所以无法访问this。
+
+```html
+<template>
+  <div>{{item.title}}</div>
+</template>
+<script>
+export default {
+  asyncData({ route, store }) {
+    return store.dispatch("fetchItem", route.params.id);
+  },
+  computed: {
+    item() {
+      return this.$store.state.items[this.$route.params.id];
+    }
+  }
+};
+</script>
+```
+
+## 服务器端预取数据
+
+在entry-server.js中，可以通过路由获得与router.getMatchedComponnets相匹配的组件，如果组件暴露出asyncData，我们就调用这个方法。然后我们需要解析完成的状态，附加到渲染上下文中。
+
+```js
+export default context => {
+    return new Promise((resolve, reject) => {
+        const { app, router, store } = createApp();
+        router.push(context.url);
+        router.onReady(() => {
+            const matchComponents = router.getMatchedComponents();
+            if (!matchComponents) {
+                return reject({ code: 404 });
+            }
+            Promise.all(matchComponents.map((Component) => {
+                if (Component.asyncData) {
+                    return Component.asyncData({
+                        store, route: router.currentRoute
+                    })
+                }
+            })).then(() => {
+                context.state = store.state;
+                // 在所有预取钩子preFetch hook resolve后
+                // 我们的store现在已经填充入渲染应用程序所需的状态
+                // 当我们把状态附加到上下文，并且template选项用于renderer时，
+                // 状态将自动序列化为window.__INITIAL_STATE__，并注入HTML
+                resolve(app);
+            }).catch(reject);
+        }, reject);
+    });
+}
+```
+当使用template时，context.state将作为window.__INITIAL_STATE__状态，自动嵌入到最终的HTML中。客户端，在挂载到应用程序之前，store酒应该获取到状态。
+
+## 客户端数据预取
+
+在路由导航之前解析数据，应用程序会等待视图所需数据全部解析之后，再传入数据并处理当前视图。建议提供一个数据加载指示器。
+
+```js
+router.onReady(() => {
+    // 添加路由钩子函数，用于处理asyncData
+    // 在初始路由resolve后执行，不会二次预取已有的数据
+    // 使用router.beforeResolve，以便确保所有异步组件都resolve
+    router.beforeResolve((to, from, next) => {
+        const matched = router.getMatchedComponents(to);
+        const preMatched = router.getMatchedComponents(from);
+        let diffed = false;
+        const activated = matched.filter((c, i) => {
+            return diffed || (diffed = (preMatched[i] !== c))
+        });
+        if (!activated.length) {
+            return next();
+        }
+        Promise.all(activated.map(c => {
+            if (c.asyncData) {
+                return c.asyncData({ store, route: to })
+            }
+        })).then(() => {
+            next();
+        }).catch(next)
+        app.$mount('#app');
+    });
+});
+```
+## 匹配要渲染的视图后，再获取数据
+
+此策略将客户端数据预取逻辑，放在视图组件的beforeMount函数中。当路由导航被触发时，可以立即切换视图，因此应用程序具有更快的响应速度。对于使用此策略的每个视图组件，都需要具有条件加载状态。
+
+```js
+Vue.mixin({
+    beforeMount() {
+        const { asyncData } = this.$options;
+        if (asyncData) {
+            this.dataPromise = asyncData({
+                store: this.$store,
+                route: this.$route
+            })
+        }
+    },
+    beforeRouteUpdate(to, from, next) {
+        const { asyncData } = this.$options;
+        if (asyncData) {
+            asyncData({ store: this.$store, route: to }).then(next).catch(next)
+        } else {
+            next();
+        }
+    }
+})
+```
+
+## Store代码拆分
+
+大型应用程序中，Vuex store可能会分为多个模块。可以将这些模块代码，分割到相应的路由组件chunk中。
+模块是路由组件的依赖，所以它被webpack移动到路由组件的异步chunk中。
+
+```js
+export default {
+    namespaced: true,
+    state: () => {
+        return { count: 0 }
+    },
+    actions: {
+        inc: ({ commit }) => commit('inc')
+    },
+    mutations: {
+        inc: state => state.count++
+    }
+}
+```
+
+```html
+<template>
+  <div>{{fooCount}}</div>
+</template>
+<script>
+import fooStoreModule from "../store.foo";
+export default {
+  asyncData({ route, store }) {
+    store.registerModule("foo".fooStoreModule);
+    return store.dispatch("foo/inc");
+  },
+  destroyed() {
+    this.$store.unregisterModule("foo");
+  },
+  computed: {
+    fooCount() {
+      return this.$store.state.foo.count;
+    }
+  }
+};
+</script>
+```
