@@ -471,3 +471,23 @@ app.$mount('#app',true)
 ## 一些需要注意的坑
 
 使用SSR+客户端混合时，需要了解的一件事是，浏览器可能会更改一些特殊的HTML结构。所以导致无法匹配。
+
+# Bundle Renderer指引
+
+## 使用基本SSR的问题
+
+假设打包的服务器端代码，将由服务器通过require直接使用，这是里所应当的，然而在每次编辑过应用程序源代码之后，都必须停止并重启服务。开发过程中影响开发效率。
+
+## 传入BundleRenderer
+
+vue-server-render提供一个creteBundleRenderer的API，用于处理此问题，通过使用webpack的自定义插件，server bundle将生成可传递到bundle renderer的特殊JSON文件。
+
+bundle renderer提供一下优点：内置的source map支持；在开发环境甚至部署过程中热重载。关键CSS注入，自动内联在渲染过程中用到的组件所需的CSS。使用clientManifest进行资源注入，自动推断出最佳的预加载preload和预取prefetch指令，以及初始渲染所需的代码分割chunk。
+
+# 构建配置
+
+## 服务器配置
+
+是用于生成传递给createBUndleRenderer的server bundle。它应该是这样的。
+
+
