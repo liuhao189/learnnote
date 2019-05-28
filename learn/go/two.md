@@ -85,3 +85,69 @@ func main(){
 
 ```
 
+# go语言常量
+
+常量是一个简单值的标识符，在程序运行时，不会被修改的量。常量中的数据类型只可以是布尔型，数字型和字符串型。
+可以省略类型说明符[type]，因为编译器可以根据变量的值来推断其类型。
+
+```go
+const indentifier [type]= value
+```
+
+常量还可以用作枚举。常量就可以用len，unsafe.Sizeof函数计算表达式的值，常量表达式中，函数必须是内置函数，否则编译不过。
+
+itoa，特殊常量，可以认为是一个可以被编译器修改的常量。itoa在const关键字出现时将被重置为0，每新增一行常量声明将使iota计数一次。
+
+字符串类型在go里是个结构，包含指向底层数组的指针和长度，两个部分每部分都是8个字节。所以字符串类型大小为16个字节。
+
+定义常量时，如果不提供初始值，则表示将使用上行的表达式。
+
+
+```go
+package main
+
+import "fmt"
+import "unsafe"
+
+const (
+	Unknown=0;
+	Female=1;
+	Male=2;
+)
+
+const (
+	e="abc";
+	f=len(e);
+	g=unsafe.Sizeof(e);
+)
+
+func main(){
+	const LENGTH int=10;
+	const WIDTH int=5;
+	var area int;
+	const a,b,c=1,false,"str";
+	area= LENGTH * WIDTH;
+	fmt.Printf("Area is %d\n",area);
+	fmt.Println(a,b,c);
+	fmt.Println(Unknown,Female,Male);
+
+	fmt.Println(e,f,g);
+}
+
+func main(){
+	const (
+		a=iota;
+		b;
+		c;
+		d="ha";
+		e;
+		f=100;
+		g;
+		h=iota;
+		i
+	)
+
+	fmt.Println(a,b,c,d,e,f,g,h,i)
+}
+```
+
