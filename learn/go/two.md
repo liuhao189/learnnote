@@ -82,7 +82,6 @@ func main(){
 	// j:=888;
 	fmt.Println(&i,i,k);
 }
-
 ```
 
 # go语言常量
