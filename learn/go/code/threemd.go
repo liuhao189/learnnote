@@ -2,28 +2,65 @@ package main
 
 import "fmt";
 
-func main() {
-	var grade string ="B";
-	var marks int = 90;
-	switch marks{
-	case 90:grade="A";
-	case 80:grade="B";
-	case 50,60,70:grade="C";
-	default:grade="D";
+func main(){
+	var x interface{}
+	switch i:=x.(type){
+	case nil:
+		fmt.Printf("x is :%T",i);
+	case int:
+		fmt.Printf("x is int!");
+	case float64:
+		fmt.Printf("float64");
+	case func(int) float64:
+		fmt.Printf("x is func(int):float64");
+	case bool,string:
+		fmt.Printf("x is bool,string");
+	default:
+		fmt.Printf("unknown type!")
 	}
 
 	switch{
-	case grade == "A":
-		fmt.Printf("优秀\n");
-	case grade=="B":
-		fmt.Printf("良好\n");
-	case grade=="C":
-		fmt.Printf("及格\n");
-	case grade=="D":
-		fmt.Printf("不及格\n");
+	case false:
+		fmt.Printf("1，false");
+		fallthrough;
+	case true:
+		fmt.Printf("2,true");
+		fallthrough;
+	case false:
+		fmt.Printf("3,false");
+		fallthrough;
+	case true:
+		fmt.Printf("4,true");
+	case false:
+		fmt.Printf("5,false");
+		fallthrough;
+	default:
+		fmt.Printf("6,default");
 	}
-	fmt.Printf("Your grade is %s\n",grade);
 }
+
+// func main() {
+// 	var grade string ="B";
+// 	var marks int = 90;
+// 	switch marks{
+// 	case 90:grade="A";
+// 	case 80:grade="B";
+// 	case 50,60,70:grade="C";
+// 	default:grade="D";
+// 	}
+
+// 	switch{
+// 	case grade == "A":
+// 		fmt.Printf("优秀\n");
+// 	case grade=="B":
+// 		fmt.Printf("良好\n");
+// 	case grade=="C":
+// 		fmt.Printf("及格\n");
+// 	case grade=="D":
+// 		fmt.Printf("不及格\n");
+// 	}
+// 	fmt.Printf("Your grade is %s\n",grade);
+// }
 
 // func print(c int){
 // 	fmt.Printf("val is %d\n",c);

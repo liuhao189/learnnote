@@ -118,7 +118,7 @@ if语句，if...esle语句，if嵌套语句跟JS类似。
 
 switch语句，基于不同条件执行不同动作。
 
-每一条case都是唯一的，从上至下逐一测试，直到匹配为止。匹配项后面也不需要再加break。需要执行后门的case，可以使用fallthrough。
+每一条case都是唯一的，从上至下逐一测试，直到匹配为止。匹配项后面也不需要再加break。需要执行后面的case，可以使用fallthrough。
 
 swicth后表达式可以是任何类型，case值是同类型的任意值，不局限于常量或整数。同时测试多个可能符合条件的值，逗号分割它们即可。
 
@@ -150,3 +150,51 @@ func main() {
 	fmt.Printf("Your grade is %s\n",grade);
 }
 ```
+
+## Type Switch
+
+switch语句还可以被用于type-switch来判断某个interface变量中实际存储的变量类型。
+
+## fallthrough
+
+使用fallthrough会强制执行后面的case语句，fallthrough不会判断下一条的表达式结果是否为true。
+
+```go
+func main(){
+	var x interface{}
+	switch i:=x.(type){
+	case nil:
+		fmt.Printf("x is :%T",i);
+	case int:
+		fmt.Printf("x is int!");
+	case float64:
+		fmt.Printf("float64");
+	case func(int) float64:
+		fmt.Printf("x is func(int):float64");
+	case bool,string:
+		fmt.Printf("x is bool,string");
+	default:
+		fmt.Printf("unknown type!")
+	}
+
+	switch{
+	case false:
+		fmt.Printf("1，false");
+		fallthrough;
+	case true:
+		fmt.Printf("2,true");
+		fallthrough;
+	case false:
+		fmt.Printf("3,false");
+		fallthrough;
+	case true:
+		fmt.Printf("4,true");
+	case false:
+		fmt.Printf("5,false");
+		fallthrough;
+	default:
+		fmt.Printf("6,default");
+	}
+}
+```
+
