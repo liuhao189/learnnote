@@ -22,4 +22,38 @@ func main() {
 		fmt.Printf("a[%d] = %d\n", j, *ptr[j])
 	}
 
+	pp()
+
+	testSwap()
+}
+
+func testSwap() {
+	var a int = 100
+	var b int = 200
+	fmt.Printf("A is %d\n", a)
+	fmt.Printf("B is %d\n", b)
+	swap(&a, &b)
+	fmt.Printf("a is %d\n", a)
+	fmt.Printf("b is %d\n", b)
+}
+
+func swap(x *int, y *int) {
+	var temp int
+	temp = *x
+	*x = *y
+	*y = temp
+}
+
+func pp() {
+	var a int
+	var ptr *int
+	var pptr **int
+	a = 3000
+
+	ptr = &a
+	pptr = &ptr
+
+	fmt.Printf("a is %d\n", a)
+	fmt.Printf("*ptr is %d\n", *ptr)
+	fmt.Printf("**pptr is %d\n", **pptr)
 }

@@ -4,7 +4,7 @@ go语言提供数组类型的数据结构。
 
 ## 声明数组
 
-go语言数组声明需要制定元素类型及元素个数。
+go语言数组声明需要指定元素类型及元素个数。
 
 ```go
 var variable_name [SIZE] variable_type
