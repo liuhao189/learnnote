@@ -27,11 +27,11 @@ git push -u origin master
 ```
 所有人都可以通过go get获取这个包。
 
-这回拉取master分支的最新代码，但是可能会有破坏性更新。
+这会拉取master分支的最新代码，但是可能会有破坏性更新。
 
 ## module版本
 
-go modules有版本的。Go会使用tags作为版本。当我们发布包的时候，我们需要给我们的代码仓库打tag。
+go modules是有版本的。Go会使用tags作为版本。当我们发布包的时候，我们需要给我们的代码仓库打tag。
 
 创建一个版本分支以便修改该版本的代码错误。
 
@@ -58,7 +58,7 @@ func main() {
 
 go build 命令会自动获取被程序引用的包。go.mod文件会加入程序引用的包。
 
-go.sum包含了module的hash值们。
+go.sum包含了module的hash值们，用于校验包。
 
 ```bash
 module main
@@ -87,6 +87,7 @@ git push --tags origin v1
  go get -u=patch使用最新的patch更新。
  go get package@version 更新到特定的version
  ```
+ 
 ## 大版本更新
 
 大版本可能不会兼容之前版本。一个大版本是一个完全不同的包。
