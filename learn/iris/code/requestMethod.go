@@ -40,6 +40,10 @@ func main(){
 		ctx.WriteString("UserId is "+id)
 	})
 	//
-
+	app.Get("/profile/{name:alphabetical max(255)}",func(ctx iris.Context){
+		name:=ctx.Params().get("name");
+		ctx.WriteString(name);
+	})
+	//
 	app.Run(iris.Addr(":8080"))
 }
