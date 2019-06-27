@@ -82,7 +82,7 @@ func main() {
 
 ## do it yourselft
 
-RegisterFunc可以接受任何返回func(paramValue string) bool的函数。或者func(steing) bool。
+RegisterFunc可以接受任何返回func(paramValue string) bool的函数。或者func(string) bool。
 
 如果验证失败，它会返回404或者任意status code。
 
@@ -100,4 +100,100 @@ RegisterFunc可以接受任何返回func(paramValue string) bool的函数。或�
 	})
 ```
 
+默认的参数类型是string，所以{name:string}=={name}。
 
+# 依赖注入
+
+hero包为iris提供安全的依赖注入功能。
+
+依赖注入的handlers非常快，接近原生的速度，因为iris在服务启动前已经开始计算。
+
+## Path Parameters
+
+根据Url模式，自动注入相关变量到handler中。串模式顺序与handler中参数顺序必须一致。
+
+```go
+func hello(from, to string) string {
+	return from + " --- " + to
+}
+
+func main() {
+	app := iris.Default()
+	//
+	helloHandler := hero.Handler(hello)
+	app.Get("/{from}/{to}", helloHandler)
+	//
+	app.Run(iris.Addr(":8080"))
+}
+```
+
+## 静态注入
+
+handler的非基本类型参数，会自动在容器中找注册的相关Type类实例。
+
+```go
+
+type Service interface {
+	SayHello(to string) string
+}
+
+type myTestService struct {
+	prefix string
+}
+
+func (s *myTestService) SayHello(to string) string {
+	return s.prefix + " " + to
+}
+
+func helloServcie(service Service, to string) string {
+	return service.SayHello(to)
+}
+
+func main() {
+	app := iris.Default()
+	//
+	hero.Register(&myTestService{prefix: "Service: Hello"})
+	helloServiceHandler := hero.Handler(helloServcie)
+	app.Get("/{to}", helloServiceHandler)
+	//
+	app.Run(iris.Addr(":8080"))
+}
+```
+
+## Pre-Request Dynamic Dependencies
+
+注册的完成器是一个有iris.Context和一个输出值的函数。
+
+当一个func(iris.Context)<TValue>传递给Register，我们叫这种情况为动态绑定。
+
+```go
+type LoginForm struct {
+	Username string `from:"username"`
+	Password string `from:"password"`
+}
+
+func login(form LoginForm) string {
+	return "Hello " + form.Username
+}
+
+func main() {
+	app := iris.Default()
+	//
+	hero.Register(func(ctx iris.Context) (form LoginForm) {
+		//bind the form with the x-www-form-urlencoded form data
+		ctx.ReadForm(&form)
+		fmt.Printf("username is %s, password is %s!\n", form.Username, form.Password)
+		return
+	})
+	//
+	loginHandler := hero.Handler(login)
+
+	app.Get("/", func(ctx iris.Context) {
+		ctx.HTML("<form action='login' method='post'><input name='username'/><input type='password' name='password'/><button type='submit'>submit</button></form>")
+	})
+
+	app.Post("/login", loginHandler)
+	//
+	app.Run(iris.Addr(":8080"))
+}
+```
