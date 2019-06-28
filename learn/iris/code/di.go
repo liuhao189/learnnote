@@ -7,8 +7,8 @@ import "github.com/kataras/iris/hero"
 import "fmt"
 
 type LoginForm struct {
-	Username string `from:"username"`
-	Password string `from:"password"`
+	Username string `form:"username"`
+	Password string `form:"password"`
 }
 
 func login(form LoginForm) string {

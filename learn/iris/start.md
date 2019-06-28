@@ -168,8 +168,8 @@ func main() {
 
 ```go
 type LoginForm struct {
-	Username string `from:"username"`
-	Password string `from:"password"`
+	Username string `form:"username"`
+	Password string `form:"password"`
 }
 
 func login(form LoginForm) string {
@@ -179,7 +179,7 @@ func login(form LoginForm) string {
 func main() {
 	app := iris.Default()
 	//
-	hero.Register(func(ctx iris.Context) (form LoginForm) {
+	hero.Register(func (ctx iris.Context) (form LoginForm) {
 		//bind the form with the x-www-form-urlencoded form data
 		ctx.ReadForm(&form)
 		fmt.Printf("username is %s, password is %s!\n", form.Username, form.Password)
@@ -197,3 +197,34 @@ func main() {
 	app.Run(iris.Addr(":8080"))
 }
 ```
+
+# Querystring parameters
+
+主要通过URLParam和URLParamDefault方法取得querySting名称。
+
+```go
+	app.Get("/welcome", func(ctx iris.Context) {
+		firsname := ctx.URLParamDefault("firstname", "Guest")
+		lastname := ctx.URLParam("lastname")
+		ctx.Writef("Hello %s %s", firsname, lastname)
+	})
+```
+
+# Multipart/Urlencoded Form
+
+application/x-www-form-urlencoded主要通过FormValue或FormValueDefault来获取值。
+
+```go
+	app.Post("form_post", func(ctx iris.Context) {
+		message := ctx.FormValue("message")
+		nick := ctx.FormValueDefault("nick", "anonymous")
+		ctx.JSON(iris.Map{
+			"status":  "posted",
+			"message": message,
+			"nick":    nick,
+		})
+	})
+```
+
+# Upload files
+
