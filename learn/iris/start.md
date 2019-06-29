@@ -226,5 +226,57 @@ application/x-www-form-urlencoded主要通过FormValue或FormValueDefault来获�
 	})
 ```
 
-# Upload files
+# Group Routes
+
+使用app.Party来设置一组路由共同的基础URL。
+
+```go
+	v1 := app.Party("v1")
+	{
+		v1.Post("/login", commonHandler)
+		v1.Post("/submit", commonHandler)
+		v1.Post("/read", commonHandler)
+	}
+
+	v2 := app.Party("/v2")
+	{
+		v2.Post("/login", commonHandler)
+		v2.Post("/submit", commonHandler)
+		v2.Post("/read", commonHandler)
+	}
+```
+
+# Blank iris without middleware by default
+
+app.Default已经使用Logger和Recovery的中间件。app.New不包含任何中间件。
+
+# Using middleware
+
+使用app.Use方法来设置中间件。
+
+```go
+	app := iris.New()
+	app.Use(recover.New())
+
+	requestLogger := logger.New(logger.Config{
+		Status:             true,
+		IP:                 true,
+		Method:             true,
+		Path:               true,
+		Query:              true,
+		MessageContextKeys: []string{"logger_message"},
+		MessageHeaderKeys:  []string{"User-Agent"},
+	})
+
+	app.Use(requestLogger)
+```
+
+# Model biding and validation
+
+iris使用go-playground/validator.v9来进行验证。
+
+你必须在你想绑定的字段上设置正确的绑定信息。eg:从JSON格式获取，使用"json:'filedname'"。
+
+
+
 
