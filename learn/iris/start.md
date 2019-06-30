@@ -14,7 +14,7 @@ package code
 import (
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/middleware/logger"
-	"github.com/kataras/iris/middleware/recover"
+	"github.com/kataras/iris/middleware/recover"  
 )
 
 func main() {
@@ -276,6 +276,8 @@ app.Default已经使用Logger和Recovery的中间件。app.New不包含任何中
 iris使用go-playground/validator.v9来进行验证。
 
 你必须在你想绑定的字段上设置正确的绑定信息。eg:从JSON格式获取，使用"json:'filedname'"。
+
+
 
 
 
