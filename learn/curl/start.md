@@ -60,3 +60,35 @@ curl -C - -o rom.zip  http://openrom-dl.flyme.cn/12156221/20180404/1522826900034
 ```bash
 curl -X POST --data "message=testcurl&nick=userone" localhost:8080/form_post
 ```
+
+# 保存与使用网站cookie信息
+
+```bash
+curl -D siteCookie -L https://www.baidu.com
+```
+
+# 使用—-X指定其他协议
+
+```bash
+curl -X DELETE https://api.github.com/one.txt
+```
+
+# 更改HTTP Header
+
+对于User-Agent，Cookie，Host这类标准的HTTP头部字段，通常会有另外一种设置方法。Curl命令提供了特定的选项来对这些头部字段进行设置。
+
+-A，--user-agent，-b，--cookie，-e，--referer
+
+```bash
+curl -H "User-Agent:test browser" https://lvyou.xxx.com/trip-package-auditapi/api/biz/spu/image/upload
+curl -A "test browser" https://lvyou.xxx.com/trip-package-auditapi/api/biz/spu/image/upload
+```
+
+# 上传文件
+
+使用了-F参数，curl会以multipart/form-data的方式发送POST请求，-F参数以name=value的方式来指定参数内容，如果值是一个文件，则需要以name=@file的方式来指定。
+
+```bash
+curl -H "cookie:It is me" -F "file=@paojie.jpeg" https://www.xxx.com/upload
+curl -H "cookie:It is me" -d "{\"name\":\"liuhao\"}" -H "Content-Type:application/json;charset=UTF-8" https://www.xx.com/changemodel
+```
