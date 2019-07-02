@@ -63,11 +63,15 @@ curl -X POST --data "message=testcurl&nick=userone" localhost:8080/form_post
 
 # 保存与使用网站cookie信息
 
+-D的意思是dump-headers，保存文件头到文件。
+
 ```bash
 curl -D siteCookie -L https://www.baidu.com
 ```
 
 # 使用—-X指定其他协议
+
+-X HTTPMETHOD，指定http方法名。
 
 ```bash
 curl -X DELETE https://api.github.com/one.txt
@@ -92,3 +96,4 @@ curl -A "test browser" https://lvyou.xxx.com/trip-package-auditapi/api/biz/spu/i
 curl -H "cookie:It is me" -F "file=@paojie.jpeg" https://www.xxx.com/upload
 curl -H "cookie:It is me" -d "{\"name\":\"liuhao\"}" -H "Content-Type:application/json;charset=UTF-8" https://www.xx.com/changemodel
 ```
+
