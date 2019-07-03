@@ -11,7 +11,9 @@ app.use(async ctx => {
 })
 
 process.on("SIGINT", () => {
+    console.log('SIGINT')
     fs.unlinkSync(fileName);
+    process.exit(1);
 });
 
 app.listen(3000)

@@ -36,7 +36,7 @@ pm2 delete app_name
 
 ```bash
 #list managed applications
-pm2 list ls status
+pm2 list || ls || status
 #display logs
 pm2 logs
 pm2 logs --lines 200
