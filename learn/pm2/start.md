@@ -86,3 +86,29 @@ pm2 start app.js --watch --ignore-watch="node_modules"
 ## Gracefule Stop
 
 在pm2重启，重新加载，关闭进程时，确保你监听了SIGINT信号并清除了多余资源。
+
+### configure the kill timeout
+
+--kill-timeout 
+
+```bash
+pm2 start app.js --kill-timeout 3000
+# kill_timeout: 3000
+```
+
+### Graceful start
+
+有时，你想等待有可用的连接后，再把应用设置为可用状态。需要使用--wait-ready命令。
+
+PM2会监听ready事件，在你的应用中，需要使用process.send('ready')。
+
+```bash
+pm2 satrt app.js -wait-ready
+```
+
+默认情况下，PM2会等待ready事件3000ms。--listen-timeout配置超时时间。
+
+```bash
+pm2 satrt app.js --wait-ready --listen-timeout 30000
+```
+

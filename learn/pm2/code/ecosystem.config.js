@@ -6,6 +6,7 @@ module.exports = {
     instances: "max",
     autorestart: true,
     watch: false,
+    kill_timeout: 3000,
     max_memory_restart: '1G',
     env: {
       NODE_ENV: 'development'
