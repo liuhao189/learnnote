@@ -27,15 +27,49 @@
 
         // window.addEventListener('scroll', debounce(handler, 1000))
 
+        // function throttle(func, delay) {
+        //     let prev = Date.now();
+        //     return function () {
+        //         let context = this;
+        //         let args = arguments;
+        //         let now = Date.now();
+        //         if (now - prev >= delay) {
+        //             func.apply(context, args);
+        //             prev = Date.now();
+        //         }
+        //     }
+        // }
+
+        // function throttle(func, delay) {
+        //     let timer = null;
+        //     return function () {
+        //         let context = this;
+        //         let args = arguments;
+        //         if (!timer) {
+        //             timer = setTimeout(function () {
+        //                 func.apply(context, args);
+        //                 timer = null;
+        //             }, delay)
+        //         }
+        //     }
+        // }
+
         function throttle(func, delay) {
-            let prev = Date.now();
+            let timer = null;
+            let startTime = Date.now();
             return function () {
+                let currentTime = Date.now();
+                let remaining = delay - (currentTime - startTime);
                 let context = this;
                 let args = arguments;
-                let now = Date.now();
-                if (now - prev >= delay) {
+                clearTimeout(timer);
+                if (remaining <= 0) {
                     func.apply(context, args);
-                    prev = Date.now();
+                    startTime = Date.now();
+                } else {
+                    timer = setTimeout(function () {
+                        func.apply(context, args);
+                    }, remaining);
                 }
             }
         }
