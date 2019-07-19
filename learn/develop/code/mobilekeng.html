@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible"
+        content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        /* body {
+            overflow: auto;
+        }
+
+        header,
+        footer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            height: 44px;
+            text-align: center;
+            line-height: 44px;
+            background-color: #ddd;
+        }
+
+        header {
+            top: 0;
+        }
+
+        footer {
+            bottom: 0;
+        }
+
+        .main {
+            height: 100%;
+            padding: 44px 0;
+        } */
+
+        /* .app-main {
+            background-color: aquamarine;
+            height: 100%;
+        } */
+    </style>
+    <style>
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* header,
+        footer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            height: 44px;
+            background-color: #ddd;
+            text-align: center;
+            line-height: 44px;
+            z-index: 1000;
+        }
+
+        header {
+            top: 0;
+        }
+
+        footer {
+            bottom: 0;
+        }
+
+        .main {
+            height: 100%;
+            padding: 44px 0;
+            box-sizing: border-box;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        } */
+    </style>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        header,
+        footer {
+            height: 44px;
+            flex: 0;
+            text-align: center;
+            line-height: 44px;
+            background-color: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        Header
+    </header>
+    <section class="main">
+        <div class="app-main">
+            <input type="text">
+            <ul id="list">
+
+            </ul>
+        </div>
+    </section>
+    <footer>Footer</footer>
+    <script>
+        function generateList(num) {
+            let strArr = [];
+            for (var i = 0; i < num; ++i) {
+                strArr.push('<li>Value:' + Math.random() + '</li>');
+            }
+            return strArr.join('')
+        }
+
+        var ulEl = document.querySelector("#list");
+
+        ulEl.innerHTML = generateList(400);
+    </script>
+</body>
+
+</html>
