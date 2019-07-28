@@ -41,13 +41,13 @@ package.json文件：
 
 1、列出package的依赖。
 
-2、指明package的版本，定力版本最好依据版本规则。
+2、指明package的版本，定义版本最好依据版本规则。
 
 3、方便其他开发者使用你的代码。
 
 ## Required name and version fileds
 
-name，必须是小写字母，可以使用连字符或下换线。
+name，必须是小写字母，可以使用连字符或下划线。
 
 version，必须是x.x.x，遵循软件版本规则。
 
@@ -87,3 +87,67 @@ module.exports = {
 npm set init.author.email "example-user@example.com"
 npm set init.author.name  "example_user"
 ```
+
+# Creating Node.js modules
+
+## main field
+
+其它人加载你的模块时引入的文件是main属性指向的文件。
+
+# README.md
+
+为了给使用你发布的包的人一个良好的体验，建议书写readme文件在你的包根目录。
+
+readme文件会在你的包页面进行展示。
+
+# Publish unscoped public packages
+
+unscoped的包都是public的，只用包名就可引用。
+
+## reviewving package contents for sensitive or unnecessary information
+
+注意避免敏感信息发布到npm包上。
+
+低度敏感信息，可以使用.npmignore或.gitignore文件避免发布到npm上。
+
+```bash
+npm publish
+
+https://npmjs.com/packages/package-name
+```
+
+# Keeping files out of your package
+
+使用.npmignore文件使部分文件和文件夹不会包含到npm包中。
+
+如果没有.npmignore文件，npm会使用.gitignore文件。
+
+如果想使用.gitignore里的文件，需要创建.gitignore文件。
+
+1、空白行或以#开头的行会忽略
+
+2、支持标准的glob模式
+
+3、/结尾可以指定一个文件夹。
+
+4、!开始可以取反。
+
+默认的，以下模式会被忽略：
+
+1、.*.swp，._*，.DB_Store,.git,.hg,.npmrc,.lock-wsscript,.svn,.wafpickle-*,.config.gypi,CVS,.npm-delog.log。
+
+node_modules会也会被忽略。
+
+以下文件永远不会被忽略。
+
+1、package.json
+
+2、README
+
+3、CHNAGELOG
+
+4、LICENSE/LICENCE
+
+## Testing whether your .npmignore or files config works
+
+npm pack会产生一个tarball，在当前目录。
