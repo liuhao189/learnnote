@@ -136,7 +136,7 @@ https://npmjs.com/packages/package-name
 
 1、.*.swp，._*，.DB_Store,.git,.hg,.npmrc,.lock-wsscript,.svn,.wafpickle-*,.config.gypi,CVS,.npm-delog.log。
 
-node_modules会也会被忽略。
+node_modules也会被忽略。
 
 以下文件永远不会被忽略。
 
@@ -151,3 +151,63 @@ node_modules会也会被忽略。
 ## Testing whether your .npmignore or files config works
 
 npm pack会产生一个tarball，在当前目录。
+
+
+## DevDependencies and Dependencies
+
+当时有npm install，npm会下载dependencies和devDependencies。
+
+可以使用smver calculator来查看要下载的具体版本。
+
+1、dependencies，线上环境需要使用的依赖。
+
+2、devDependencies，开发环境需要使用的依赖。
+
+## Adding dist-tags to packages
+
+发布标签是更易读易懂的文本。
+
+npm publish会默认将你的包打上latest标签。如果要使用其他tag，需要使用--tag符号。
+
+```bash
+npm publish --tag beta
+npm dist-tag add <package-name>@<version> tag
+```
+
+## 更新版本
+
+可以使用npm version update_type 命名更新版本。
+
+update_type必须是patch，major或minor。
+
+## 从registry中删除包
+
+在你发布包之后的72小时以内，你可以使用npm命令删除该npm包。
+
+72小时以后，需要联系npm支客服。
+
+一旦删除npm包，npm包在24小时以内不能再次发布。需要换npm包名才可再次发布。
+
+```bash
+npm unpublish <package-name> -f
+npm unpublish <package_name>@<version>
+```
+
+## deprecate and undeprecating
+
+如果你不想再维护npm包的特定版本，你可以将该版本标记为deprecate。用户安装该版本时，会在命令行打印一条deprecate的消息。
+
+### deprecate npm包
+
+deprecate npm包，会让该包不会搜索到。包主页会显示一条deprecate消息。
+
+undeprecate npm包，使用npm deprecate <package_name> ""命令，message为空字符串即可。
+
+```bash
+npm deprecate <package_name> "message"
+
+# undeprecate
+
+npm deprecate <package_name> ""
+```
+
