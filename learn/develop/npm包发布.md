@@ -155,7 +155,7 @@ npm pack会产生一个tarball，在当前目录。
 
 ## DevDependencies and Dependencies
 
-当时有npm install，npm会下载dependencies和devDependencies。
+当执行npm install，npm会下载dependencies和devDependencies。
 
 可以使用smver calculator来查看要下载的具体版本。
 
@@ -184,7 +184,7 @@ update_type必须是patch，major或minor。
 
 在你发布包之后的72小时以内，你可以使用npm命令删除该npm包。
 
-72小时以后，需要联系npm支客服。
+72小时以后，需要联系npm技术支持。
 
 一旦删除npm包，npm包在24小时以内不能再次发布。需要换npm包名才可再次发布。
 
@@ -199,9 +199,11 @@ npm unpublish <package_name>@<version>
 
 ### deprecate npm包
 
-deprecate npm包，会让该包不会搜索到。包主页会显示一条deprecate消息。
+deprecate npm包，会让该包不会被搜索到。包主页会显示一条deprecate消息。
 
 undeprecate npm包，使用npm deprecate <package_name> ""命令，message为空字符串即可。
+
+    powershell好像不可以，cmd可以。
 
 ```bash
 npm deprecate <package_name> "message"
