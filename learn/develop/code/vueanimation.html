@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible"
+        content="ie=edge">
+    <title>Vue Animation</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <style>
+        #app {
+            overflow: hidden;
+        }
+
+        /* 
+        .fade-enter-active,
+        .fade-leave-active {
+            transition: all .5s;
+        }
+
+        .fade-enter,
+        .fade-leave-to {
+            opacity: 0;
+            transform: translateX(100px)
+        } */
+
+        /* .slide-fade-enter,
+        .slide-fade-leave-to {
+            transform: translateX(150px);
+            opacity: 0;
+        }
+
+        .slide-fade-enter-active,
+        .slide-fade-leave-active {
+            transition: all 1s ease;
+        } */
+
+
+        @keyframes bounce-in {
+            0% {
+                transform: translateX(100px);
+            }
+
+            100% {
+                transform: translateX(0px)
+            }
+        }
+
+        .bounce-enter-active,
+        .bounce-leave-active {
+            animation-name: bounce-in;
+            animation-duration: 1s;
+            animation-timing-function: ease-in-out;
+        }
+
+        .bounce-leave-active {
+            animation-direction: reverse;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="show=!show">Toggle</button>
+        <transition name="bounce">
+            <p v-show="show">Hello World!</p>
+        </transition>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data() {
+                return {
+                    show: true
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
