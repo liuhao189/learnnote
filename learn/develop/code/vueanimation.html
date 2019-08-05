@@ -9,9 +9,15 @@
         content="ie=edge">
     <title>Vue Animation</title>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1"
+        rel="stylesheet"
+        type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+
     <style>
         #app {
             overflow: hidden;
+            height: 500px;
         }
 
         /* 
@@ -38,7 +44,7 @@
         } */
 
 
-        @keyframes bounce-in {
+        /* @keyframes bounce-in {
             0% {
                 transform: translateX(100px);
             }
@@ -53,10 +59,37 @@
             animation-name: bounce-in;
             animation-duration: 1s;
             animation-timing-function: ease-in-out;
+            /* transition: all 10s ease-out; */
+
+        /* }
+
+        .bounce-leave-to,
+        .bounce-enter {
+         transform: translateX(100px); 
         }
 
         .bounce-leave-active {
             animation-direction: reverse;
+        } */
+        .filter-container {
+            position: fixed;
+            top: 50px;
+            height: 500px;
+            right: 0;
+            left: 0;
+            background-color: #ddd;
+            /* border-radius: 100px; */
+        }
+
+        .top-down-enter,
+        .top-down-leave-to {
+            height: 0;
+            /* opacity: 0; */
+        }
+
+        .top-down-enter-active,
+        .top-down-leave-active {
+            transition: all .35s cubic-bezier(0, 0, 0.74, 0.17);
         }
     </style>
 </head>
@@ -64,8 +97,22 @@
 <body>
     <div id="app">
         <button @click="show=!show">Toggle</button>
-        <transition name="bounce">
-            <p v-show="show">Hello World!</p>
+        <button @click="toggle(2)">Toggle</button>
+        <transition name="top-down"
+            appear>
+            <div class="filter-container"
+                v-if="show">
+                <p>
+                    <input type="date" />
+                </p>
+            </div>
+        </transition>
+        <transition name="top-down"
+            appear>
+            <div class="filter-container"
+                v-if="show2">
+                <p>Hello show2</p>
+            </div>
         </transition>
     </div>
     <script>
@@ -73,7 +120,38 @@
             el: "#app",
             data() {
                 return {
-                    show: true
+                    show: true,
+                    show2: false,
+                }
+            },
+            methods: {
+                toggle(type) {
+                    if (type === 2) {
+                        this.show2 = !this.show2;
+                        if (this.show2) {
+                            this.show = false;
+                        }
+                    }
+                },
+                beforeEnter(el) {
+                    el.style.opacity = 0;
+                    el.style.transformOrigin = "left"
+                    el.style.transform = "none";
+                    el.style.display = "inline-block"
+                },
+                enter(el, done) {
+                    Velocity(el, { opacity: 1, fontSize: '1.4em' }, { duration: 300 })
+                    Velocity(el, { fontSize: '1em' }, { complete: done })
+                },
+                leave(el, done) {
+                    Velocity(el, { translateX: '15px', rotateZ: '50deg' }, { duration: 600 })
+                    Velocity(el, { rotateZ: "100deg" }, { loop: 2 })
+                    Velocity(el, {
+                        rotateZ: "45deg",
+                        translateY: '30px',
+                        translateX: '30px',
+                        opacity: 0
+                    }, { complete: done })
                 }
             }
         })
