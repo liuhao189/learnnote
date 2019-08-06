@@ -54,7 +54,7 @@ enter-class，enter-active-class，enter-to-class，leave-class，leave-active-c
 
 ## 同时使用过渡和动画
 
-Vue需要知道过渡的完成，必须设置相应的事件监听器。可以是tranitionend或animationend，这取决于给元素应用的CSS骨子额。如果要给一个元素同时设置两种过渡动效，必须使用type特性并设置animation或transition来明确什么你需要Vue监听的类型。
+Vue需要知道过渡的完成，必须设置相应的事件监听器。可以是tranitionend或animationend，这取决于给元素应用的CSS属性。如果要给一个元素同时设置两种过渡动效，必须使用type特性并设置animation或transition来明确什么你需要Vue监听的类型。
 
 ## 显性地过渡时间
 
@@ -75,3 +75,80 @@ Vue需要知道过渡的完成，必须设置相应的事件监听器。可以�
 ## 初始渲染的过渡
 
 可以通过appear特性设置节点在初始渲染的过渡。也可以自定义CSS类名。或自定义JS钩子。
+
+# 多个元素的过渡
+
+之后讨论多个组件的过渡，对于原生标签可以使用v-if/v-else。最常见的多标签过渡是一个列表和描述这个列表为空消息的元素。
+
+    当有相同标签名的元素切换时，需要通过key特性设置唯一的来标记以让vue区分它们，否则Vue为了效率只会替换相同标签内部的内容。
+
+使用了多个v-if的多个元素的过渡可以重写为绑定了动态属性的单个元素过渡。
+
+```html
+    <div id="app">
+        <button @click="toggle">Toggle</button>
+        <button @click="changeType">ChangeType</button>
+        <transition appear
+            name="fade">
+            <table v-if="items.length>0">
+                <tr v-for="item of items">
+                    <td>{{item}}</td>
+                </tr>
+            </table>
+            <p v-else>Sorry, no items found.</p>
+        </transition>
+        <transition appear
+            name="fade">
+            <span :key="currentStr"
+                style="display:inline-block;">{{currentStr}}</span>
+        </transition>
+    </div>
+```
+
+## 过渡模式
+
+transition的默认行为，进入和离开同时发生，一个离开过渡的时候另一个进入过渡。
+
+过渡模式：
+
+1、in-out，新元素先进行过渡，完成之后当前元素过渡离开。
+
+2、out-in, 当前元素先进行过渡，完整之后新元素过渡进入。
+
+# 多个组件的过渡
+
+多个组件的过渡简单很多，不需要使用key特性，相反，只需要使用动态组件。
+
+```html
+    <transition name="fade"
+        appear
+        mode="out-in">
+        <component :is="view"></component>
+    </transition>
+```
+
+# 列表过渡
+
+目前为止，关于过渡我们已经讲到：单个节点，同一时间渲染多个节点中的一个。
+
+同时渲染整个列表，使用v-for。这种场景中，使用transition-group组件。
+
+1、不同于transition，它会以一个真实元素呈现，默认为一个span，也可以通过tag特性更换为其它元素。
+
+2、过渡模式不可用，不再相互切换特有的元素。
+
+3、内部元素总数需要提供唯一的key属性值。
+
+4、CSS过渡的类将会应用在内部的元素中，而不是这个组/容器本身。
+
+## 列表的进入/离开过渡
+
+```html
+    <transition-group name="list"
+        appear
+        tag="p">
+        <span v-for="item in list"
+            :key="item"
+            class="list-item">{{item}}</span>
+    </transition-group>
+```
