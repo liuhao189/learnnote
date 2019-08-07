@@ -13,6 +13,7 @@
         rel="stylesheet"
         type="text/css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
 
     <style>
         #app {
@@ -71,12 +72,17 @@
         .list-item {
             display: inline-block;
             margin-right: 10px;
+            transition: all 1s;
         }
 
         .list-enter-active,
+        .list-leave-active {}
+
         .list-leave-active {
-            transition: all 1s;
+            position: absolute;
         }
+
+
 
         .list-enter,
         .list-leave-to {
@@ -87,6 +93,137 @@
 </head>
 
 <body>
+    <div id="flip-list-demo"
+        class="demo">
+        <button @click="shuffle">Shuffle</button>
+        <transition-group name="flip-list"
+            appear
+            tag="ul">
+            <li v-for="item in items"
+                :key="item">
+                {{item}}
+            </li>
+        </transition-group>
+        <input type="text"
+            v-model="query" />
+        <transition-group tag="ul"
+            :css="false"
+            appear
+            @before-enter="beforeEnter"
+            @enter="enter"
+            @leave="leave">
+            <li v-for="(item,inx) of computedList"
+                :key="item.msg"
+                :data-index="inx">
+                {{item.msg}}
+            </li>
+        </transition-group>
+        <button @click="show=!show">Show</button>
+        <my-transition>
+            <p style="display:inline-block;"
+                :key="Math.random()"
+                v-if="show">show!</p>
+            <p style="display:inline-block;"
+                :key="Math.random()"
+                v-if="!show">hidden!</p>
+        </my-transition>
+    </div>
+    <style>
+        .flip-list-move {
+            transition: transform 1s;
+        }
+    </style>
+    <script>
+        Vue.component('my-transition', {
+            functional: true,
+            render: function (createElement, context) {
+                let data = {
+                    props: {
+                        name: 'reuse',
+                        mode: 'out-in',
+                        appear: true
+                    },
+                    on: {
+                        beforeEnter: function (el, done) {
+                            Velocity(el, {
+                                opacity: 1,
+                                translateX: 0,
+                                fontSize: '38px'
+                            }, {
+                                    complete: () => {
+                                        el.style.transition = ""
+                                        done();
+                                    }
+                                })
+                        },
+                        enter: function (el) {
+                            el.style.opacity = 0;
+                            el.style.transform = "translateX(100px)"
+                            el.style.transition = "all .5s linear";
+                        }
+                    }
+                };
+
+                return createElement('transition', data, context.children);
+            }
+        })
+        let listVm = new Vue({
+            el: "#flip-list-demo",
+            data() {
+                return {
+                    items: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                    query: '',
+                    show: false,
+                    list: [
+                        { msg: "Bruce Les" },
+                        { msg: 'Jackie Chan' },
+                        { msg: 'Chuck Norris' },
+                        { msg: 'Jet Li' },
+                        { msg: 'Kung Fury' }]
+                }
+            },
+            computed: {
+                computedList: function () {
+                    let vm = this;
+                    console.log(vm.query);
+                    let resultList = this.list.filter((item) => {
+                        return item.msg.toLowerCase().indexOf(vm.query.toLowerCase()) !== -1
+                    })
+                    debugger;
+                    return resultList;
+                }
+            },
+            methods: {
+                beforeEnter(el) {
+                    el.style.opacity = 0;
+                    el.style.height = 0;
+                },
+                leave(el, done) {
+                    let delay = el.dataset.index * 100;
+                    setTimeout(() => {
+                        Velocity(el,
+                            { opacity: 0, height: 0 },
+                            { complete: done }
+                        );
+                    }, delay);
+                },
+                enter(el, done) {
+                    let delay = el.dataset.index * 100;
+                    setTimeout(() => {
+                        Velocity(el, {
+                            opacity: 1,
+                            height: '1.6em'
+                        }, {
+                                complete: done
+                            })
+                    }, delay);
+                },
+                shuffle: function () {
+                    this.items = _.shuffle(this.items);
+                }
+            }
+        });
+    </script>
     <div id="app">
         <button @click="toggle">Toggle</button>
         <button @click="changeType">ChangeType</button>

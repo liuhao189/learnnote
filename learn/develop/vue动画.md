@@ -78,7 +78,7 @@ Vue需要知道过渡的完成，必须设置相应的事件监听器。可以�
 
 # 多个元素的过渡
 
-之后讨论多个组件的过渡，对于原生标签可以使用v-if/v-else。最常见的多标签过渡是一个列表和描述这个列表为空消息的元素。
+对于原生标签可以使用v-if/v-else。最常见的多标签过渡是一个列表和描述这个列表为空消息的元素。
 
     当有相同标签名的元素切换时，需要通过key特性设置唯一的来标记以让vue区分它们，否则Vue为了效率只会替换相同标签内部的内容。
 
@@ -113,11 +113,11 @@ transition的默认行为，进入和离开同时发生，一个离开过渡的�
 
 1、in-out，新元素先进行过渡，完成之后当前元素过渡离开。
 
-2、out-in, 当前元素先进行过渡，完整之后新元素过渡进入。
+2、out-in, 当前元素先进行过渡，完成之后新元素过渡进入。
 
 # 多个组件的过渡
 
-多个组件的过渡简单很多，不需要使用key特性，相反，只需要使用动态组件。
+多个组件的过渡简单很多，不需要使用key特性，只需要使用动态组件即可。
 
 ```html
     <transition name="fade"
@@ -137,7 +137,7 @@ transition的默认行为，进入和离开同时发生，一个离开过渡的�
 
 2、过渡模式不可用，不再相互切换特有的元素。
 
-3、内部元素总数需要提供唯一的key属性值。
+3、内部元素总是需要提供唯一的key属性值。
 
 4、CSS过渡的类将会应用在内部的元素中，而不是这个组/容器本身。
 
@@ -151,4 +151,74 @@ transition的默认行为，进入和离开同时发生，一个离开过渡的�
             :key="item"
             class="list-item">{{item}}</span>
     </transition-group>
+```
+
+## 列表的排序过渡
+
+transition-group组件还有一个特殊之处，不仅可以进入和离开动画，还可以改变定位，要使用这个新功能只需了解新增的v-move特性。它会在元素的改变定位的过程中应用。可以通过move-class属性手动设置。
+
+内部的实现，Vue使用了一个叫FLIP简单的动画队列，使用transforms将元素从之前的位置平滑过渡到新的位置。
+
+    使用FLIP过渡的元素不能设置为display:inline，作为替代方案，可以设置为display:inline-block或者放置于flex中。
+
+FLIP动画不仅可以实现单列过渡，多维网格也同样可以过渡。
+
+## 列表的交错过渡
+
+通过data属性与JS通信，就可以实现列表的交错过渡。
+
+```html
+    <transition-group tag="ul"
+        :css="false"
+        appear
+        @before-enter="beforeEnter"
+        @enter="enter"
+        @leave="leave">
+        <li v-for="(item,inx) of computedList"
+            :key="item.msg"
+            :data-index="inx">
+            {{item.msg}}
+        </li>
+    </transition-group>
+```
+
+# 可复用的过渡
+
+过渡可以通过Vue的组件系统实现复用，创建一个可复用过渡组件，需要做的就是讲transition或transition-group作为根组件，然后将任何子组件放置在其中就可以了。
+
+函数式组件更适合完成这个任务。
+
+```js
+ Vue.component('my-transition', {
+            functional: true,
+            render: function (createElement, context) {
+                let data = {
+                    props: {
+                        name: 'reuse',
+                        mode: 'out-in',
+                        appear: true
+                    },
+                    on: {
+                        beforeEnter: function (el, done) {
+                            Velocity(el, {
+                                opacity: 1,
+                                translateX: 0,
+                                fontSize: '38px'
+                            }, {
+                                    complete: () => {
+                                        el.style.transition = ""
+                                        done();
+                                    }
+                                })
+                        },
+                        enter: function (el) {
+                            el.style.opacity = 0;
+                            el.style.transform = "translateX(100px)"
+                            el.style.transition = "all .5s linear";
+                        }
+                    }
+                };
+
+                return createElement('transition', data, context.children);
+            }
 ```
