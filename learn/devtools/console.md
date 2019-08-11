@@ -82,7 +82,7 @@ countReset清空计数器。
 
 dir展示对象的详细JSON属性。
 
-debug和console.log(object,[,object,...])一样。
+debug和console.log(object,[,object,...])功能类似。
 
 dirxml以XML格式展示元素的后代节点。
 
