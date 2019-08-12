@@ -6,7 +6,7 @@
 
 ## FPS Table
 
-FPS上不的红色Bar表示FPS太低，影响用户体验。绿色的条越高，FPS越高。一般与requestAnimationFrame回调有关。
+FPS上部的红色Bar表示FPS太低，影响用户体验。绿色的条越高，FPS越高。一般与requestAnimationFrame回调有关。
 
 ## 使用RAIL模型评估性能
 
