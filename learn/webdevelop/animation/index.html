@@ -19,13 +19,97 @@
         body {
             height: 100%;
             background-color: black;
+            overflow-x: hidden;
+        }
+    </style>
+    <style>
+        .logo img {
+            width: 100px;
+            height: 100px;
+        }
+
+        .num {
+            color: white;
+        }
+
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: #f3f3f3;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .box.green {
+            background-color: green;
+        }
+
+        .box.orange {
+            background-color: orange;
+        }
+
+        .box.gray {
+            background-color: gray;
         }
     </style>
 
 </head>
 
 <body>
+    <div class="logo">
+        <img src="./in-love-4.svg" />
+    </div>
+    <div class="num">
 
+    </div>
+    <div class="box default">
+
+    </div>
+
+    <div class="box green">
+
+    </div>
+
+    <div class="box orange">
+
+    </div>
+
+    <div class="box gray">
+
+    </div>
+    <script>
+        TweenMax.to('.logo img', 1, { x: 100, rotation: 360, scale: 2 });
+        let obj = { prop: 10 }
+        let numEl = document.querySelector(".num");
+        TweenMax.to(obj, 1, {
+            prop: 200,
+            onUpdate: function () {
+                requestAnimationFrame(function () {
+                    numEl.innerText = Number.parseInt(obj.prop);
+                });
+            }
+        });
+
+        TweenMax.to('.box.default', 1, {
+            borderRadius: "50% 50%"
+        })
+
+        TweenMax.to('.box.green', 3, {
+            rotationX: 360
+        })
+
+        TweenMax.to('.box.orange', 3, {
+            rotationY: 360
+        })
+
+        TweenMax.to('.box.gray', 3, {
+            x: 100,
+            y: 100,
+            scale: 2,
+            skewX: 45,
+            rotation: 180
+        })
+    </script>
 </body>
 
 </html>
