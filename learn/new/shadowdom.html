@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible"
+        content="ie=edge">
+    <title>Shadow DOM</title>
+</head>
+
+<body>
+    <script>
+        const divEl = document.createElement('div');
+        const shadowRoot = divEl.attachShadow({ mode: 'open' });
+        shadowRoot.innerHTML = "<h1>Hello Shadow DOM!</h1>"
+        document.body.appendChild(divEl);
+    </script>
+    <script>
+        customElements.define('fancy-tabs', class extends HTMLElement {
+            constructor() {
+                super();
+                const shadowRoot = this.attachShadow({ mode: 'open' });
+                shadowRoot.innerHTML = `<style>h1{font-size:16px;font-weight:bold;color:#ccc;}</style>
+               <div id="tabs">
+                <slot id="tabSlot" name="title"></slot>
+               </div>
+               <div id="panels">
+                <slot id="panelsSlot"></slot>
+               </div>`;
+            }
+        });
+    </script>
+    <fancy-tabs>
+        <button slot="title">Title</button>
+        <section>content panel1</section>
+        <button slot="title"
+            selected>Title2</button>
+        <section>content panel2</section>
+        <button slot="title"
+            selected>Title3</button>
+        <section>content panel3</section>
+    </fancy-tabs>
+</body>
+
+</html>

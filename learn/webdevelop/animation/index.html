@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible"
+        content="ie=edge">
+    <title>GSAP</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+            background-color: black;
+            overflow-x: hidden;
+        }
+    </style>
+    <style>
+        .logo img {
+            width: 100px;
+            height: 100px;
+        }
+
+        .logo {
+            transform-origin: 0 0;
+        }
+
+        .num {
+            color: white;
+        }
+
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: #f3f3f3;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .box.green {
+            background-color: green;
+        }
+
+        .box.orange {
+            background-color: orange;
+        }
+
+        .box.gray {
+            background-color: gray;
+        }
+
+        #list {
+            margin-top: 150px;
+        }
+
+        #list li {
+            background-color: #ccc;
+            padding: 6px 10px;
+            color: white;
+            margin-bottom: 10px;
+        }
+    </style>
+    <style>
+        .box-container {
+            display: flex;
+            justify-content: space-around;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="box-container">
+        <div class="box green"></div>
+        <div class="box green"></div>
+        <div class="box green"></div>
+    </div>
+    <!-- <div class="action-area">
+        <button>play</button>
+        <button>pause</button>
+        <button>resume</button>
+        <button>reverse</button>
+        <button>seek</button>
+        <button>progress</button>
+        <button>timeScale</button>
+        <button>kill</button>
+    </div> -->
+    <!-- <div class="logo">
+        <img src="./in-love-4.svg" />
+    </div>-->
+    <!-- <ul id="list">
+        <li id="item1">1</li>
+        <li id="item2">2</li>
+        <li id="item3">3</li>
+    </ul> -->
+    <script>
+        let t1 = new TimelineMax();
+        t1.staggerTo('.box', 1, { y: 200, ease: Elastic.easeOut }, 1)
+            .staggerTo(".box", 1, { y: 600, ease: Elastic.easeIn }, 2);
+
+        // let ani1 = TweenMax.to('.box', 20, { y: 450, delay: 1, ease: Elastic.easeOut });
+        // document.querySelector(".action-area").addEventListener('click', (ev) => {
+        //     let srcEl = ev.srcElement;
+        //     let srcText = srcEl.innerText;
+        //     switch (srcText) {
+        //         case 'play': ani1.play(); break;
+        //         case 'pause': ani1.pause(); break;
+        //         case 'resume': ani1.resume(); break;
+        //         case 'reverse': ani1.reverse(); break;
+        //         case 'seek': ani1.seek(1); break;
+        //         case 'progress': ani1.progress(0.5); break;
+        //         case 'timeScale': ani1.timeScale(2); break;
+        //         case 'kill': ani1.kill(); break;
+        //     }
+        // })
+        // // let t1 = new TimelineMax({
+        //     repeat: 1, repeatDelay: 1,
+        //     onRepeat: () => { console.log('repeated!') },
+        //     onComplete: (ev) => {
+        //         console.log('Complete:' + ev);
+        //     },
+        //     onCompleteParams: ["done!"]
+        // });
+        // t1.staggerTo(".box", 1, { y: 300, ease: Elastic.easeOut }, 1);
+        // t1.staggerTo(".box", 1, { y: 740, ease: Elastic.easeIn }, 1, '+=0.5');
+        // TweenMax.fromTo('.logo', 1.5, { scaleX: 0, scaleY: 0 }, { scaleX: 2, scaleY: 2 });
+        // let max = 3, current = 1;
+        // while (current <= max) {
+        //     let selectorStr = '#item' + current;
+        //     TweenMax.from(selectorStr, 1, {
+        //         x: 100 + '%', delay: current - 1 + 0.016,
+        //         onComplete: (ev) => { console.log(ev); },
+        //         onUpdate: (ev) => { console.log(ev) },
+        //         ease: Elastic.easeOut
+        //     })
+        //     current++;
+        // }
+    </script>
+    <!-- <div class="num">
+
+    </div>
+    <div class="box default">
+
+    </div>
+
+    <div class="box green">
+
+    </div>
+
+    <div class="box orange">
+
+    </div>
+
+    <div class="box gray">
+
+    </div> -->
+    <script>
+        // TweenMax.to('.logo img', 1, { x: 100, rotation: 360, scale: 2 });
+        // let obj = { prop: 10 }
+        // let numEl = document.querySelector(".num");
+        // TweenMax.to(obj, 1, {
+        //     prop: 200,
+        //     onUpdate: function () {
+        //         requestAnimationFrame(function () {
+        //             numEl.innerText = Number.parseInt(obj.prop);
+        //         });
+        //     }
+        // });
+
+        // TweenMax.to('.box.default', 1, {
+        //     borderRadius: "50% 50%"
+        // })
+
+        // TweenMax.to('.box.green', 3, {
+        //     rotationX: 360
+        // })
+
+        // TweenMax.to('.box.orange', 3, {
+        //     rotationY: 360
+        // })
+
+        // TweenMax.to('.box.gray', 3, {
+        //     x: 100,
+        //     y: 100,
+        //     scale: 2,
+        //     skewX: 45,
+        //     rotation: 180
+        // })
+    </script>
+</body>
+
+</html>

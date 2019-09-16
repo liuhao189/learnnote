@@ -14,7 +14,7 @@ package code
 import (
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/middleware/logger"
-	"github.com/kataras/iris/middleware/recover"
+	"github.com/kataras/iris/middleware/recover"  
 )
 
 func main() {
@@ -82,7 +82,7 @@ func main() {
 
 ## do it yourselft
 
-RegisterFunc可以接受任何返回func(paramValue string) bool的函数。或者func(steing) bool。
+RegisterFunc可以接受任何返回func(paramValue string) bool的函数。或者func(string) bool。
 
 如果验证失败，它会返回404或者任意status code。
 
@@ -99,5 +99,264 @@ RegisterFunc可以接受任何返回func(paramValue string) bool的函数。或�
 			otherwise this hanlder will not be executed`, name)
 	})
 ```
+
+默认的参数类型是string，所以{name:string}=={name}。
+
+# 依赖注入
+
+hero包为iris提供安全的依赖注入功能。
+
+依赖注入的handlers非常快，接近原生的速度，因为iris在服务启动前已经开始计算。
+
+## Path Parameters
+
+根据Url模式，自动注入相关变量到handler中。串模式顺序与handler中参数顺序必须一致。
+
+```go
+func hello(from, to string) string {
+	return from + " --- " + to
+}
+
+func main() {
+	app := iris.Default()
+	//
+	helloHandler := hero.Handler(hello)
+	app.Get("/{from}/{to}", helloHandler)
+	//
+	app.Run(iris.Addr(":8080"))
+}
+```
+
+## 静态注入
+
+handler的非基本类型参数，会自动在容器中找注册的相关Type类实例。
+
+```go
+
+type Service interface {
+	SayHello(to string) string
+}
+
+type myTestService struct {
+	prefix string
+}
+
+func (s *myTestService) SayHello(to string) string {
+	return s.prefix + " " + to
+}
+
+func helloServcie(service Service, to string) string {
+	return service.SayHello(to)
+}
+
+func main() {
+	app := iris.Default()
+	//
+	hero.Register(&myTestService{prefix: "Service: Hello"})
+	helloServiceHandler := hero.Handler(helloServcie)
+	app.Get("/{to}", helloServiceHandler)
+	//
+	app.Run(iris.Addr(":8080"))
+}
+```
+
+## Pre-Request Dynamic Dependencies
+
+注册的完成器是一个有iris.Context和一个输出值的函数。
+
+当一个func(iris.Context)<TValue>传递给Register，我们叫这种情况为动态绑定。
+
+```go
+type LoginForm struct {
+	Username string `form:"username"`
+	Password string `form:"password"`
+}
+
+func login(form LoginForm) string {
+	return "Hello " + form.Username
+}
+
+func main() {
+	app := iris.Default()
+	//
+	hero.Register(func (ctx iris.Context) (form LoginForm) {
+		//bind the form with the x-www-form-urlencoded form data
+		ctx.ReadForm(&form)
+		fmt.Printf("username is %s, password is %s!\n", form.Username, form.Password)
+		return
+	})
+	//
+	loginHandler := hero.Handler(login)
+
+	app.Get("/", func(ctx iris.Context) {
+		ctx.HTML("<form action='login' method='post'><input name='username'/><input type='password' name='password'/><button type='submit'>submit</button></form>")
+	})
+
+	app.Post("/login", loginHandler)
+	//
+	app.Run(iris.Addr(":8080"))
+}
+```
+
+# Querystring parameters
+
+主要通过URLParam和URLParamDefault方法取得querySting名称。
+
+```go
+	app.Get("/welcome", func(ctx iris.Context) {
+		firsname := ctx.URLParamDefault("firstname", "Guest")
+		lastname := ctx.URLParam("lastname")
+		ctx.Writef("Hello %s %s", firsname, lastname)
+	})
+```
+
+# Multipart/Urlencoded Form
+
+application/x-www-form-urlencoded主要通过FormValue或FormValueDefault来获取值。
+
+```go
+	app.Post("form_post", func(ctx iris.Context) {
+		message := ctx.FormValue("message")
+		nick := ctx.FormValueDefault("nick", "anonymous")
+		ctx.JSON(iris.Map{
+			"status":  "posted",
+			"message": message,
+			"nick":    nick,
+		})
+	})
+```
+
+# Group Routes
+
+使用app.Party来设置一组路由共同的基础URL。
+
+```go
+	v1 := app.Party("v1")
+	{
+		v1.Post("/login", commonHandler)
+		v1.Post("/submit", commonHandler)
+		v1.Post("/read", commonHandler)
+	}
+
+	v2 := app.Party("/v2")
+	{
+		v2.Post("/login", commonHandler)
+		v2.Post("/submit", commonHandler)
+		v2.Post("/read", commonHandler)
+	}
+```
+
+# Blank iris without middleware by default
+
+app.Default已经使用Logger和Recovery的中间件。app.New不包含任何中间件。
+
+# Using middleware
+
+使用app.Use方法来设置中间件。
+
+```go
+	app := iris.New()
+	app.Use(recover.New())
+
+	requestLogger := logger.New(logger.Config{
+		Status:             true,
+		IP:                 true,
+		Method:             true,
+		Path:               true,
+		Query:              true,
+		MessageContextKeys: []string{"logger_message"},
+		MessageHeaderKeys:  []string{"User-Agent"},
+	})
+
+	app.Use(requestLogger)
+```
+
+# Model biding and validation
+
+iris使用go-playground/validator.v9来进行验证。
+
+你必须在你想绑定的字段上设置正确的绑定信息。eg:从JSON格式获取，使用"json: 'filedname'"。
+
+```bash
+package main
+
+import (
+	"fmt"
+	"github.com/kataras/iris"
+	"gopkg.in/go-playground/validator.v9"
+)
+
+type Address struct {
+	Street string `json:"street" validate:"required"`
+	City   string `json:"city" validate:"required"`
+	Plant  string `json:"plant" validate:"required"`
+	Phone  string `json:"phone" validate:"required"`
+}
+
+type User struct {
+	FirstName      string     `json:"fname"`
+	LastName       string     `json:"lname"`
+	Age            uint8      `json:"age" validate:"gte=0,lte=130"`
+	Email          string     `json:"email" validate:"required.email"`
+	FavouriteColor string     `json:"favColor" validate:"hexcolor|rgb|rgba"`
+	Addresses      []*Address `json:"address" validate: "required,dive,required"`
+}
+
+func UserStructLevelValidation(s1 validator.StructLevel) {
+	user := s1.Current().Interface().(User)
+	fmt.Println(user.FirstName)
+}
+
+var validate *validator.Validate
+
+func main() {
+	validate = validator.New()
+
+	validate.RegisterStructValidation(UserStructLevelValidation, User{})
+
+	app := iris.New()
+
+	app.Post("/user", func(ctx iris.Context) {
+		var user User
+		if err := ctx.ReadJSON(&user); err != nil {
+			ctx.WriteString(err.Error())
+			return
+		}
+		err := validate.Struct(user)
+		if err != nil {
+			if _, ok := err.(*validator.InvalidValidationError); ok {
+				ctx.StatusCode(iris.StatusInternalServerError)
+				ctx.WriteString(err.Error())
+				return
+			}
+
+			ctx.StatusCode(iris.StatusBadRequest)
+			for _, err := range err.(validator.ValidationErrors) {
+				fmt.Println()
+				fmt.Println(err.Namespace())
+				fmt.Println(err.Field())
+				fmt.Println(err.StructNamespace())
+				fmt.Println(err.StructField())
+				fmt.Println(err.Tag())
+				fmt.Println(err.ActualTag())
+				fmt.Println(err.Kind())
+				fmt.Println(err.Type())
+				fmt.Println(err.Value())
+				fmt.Println(err.Param())
+				fmt.Println()
+			}
+		}
+	})
+
+	app.Run(iris.Addr(":8080"))
+}
+
+```
+
+
+
+
+
+
 
 
