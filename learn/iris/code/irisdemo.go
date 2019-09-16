@@ -1,4 +1,4 @@
-package code
+package main
 
 import (
 	"github.com/kataras/iris"
@@ -8,7 +8,7 @@ import (
 
 func main() {
 	app := iris.New()
-	app.Logger().setLevel("debug")
+	app.Logger().SetLevel("debug")
 	//
 	app.Use(recover.New())
 	app.Use(logger.New())
