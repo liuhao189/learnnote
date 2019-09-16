@@ -40,7 +40,7 @@ env和constant作用相同，但是，IOS11.2之后constant是不能使用的，
 
 1、fixed完全吸底元素，bottom：0。
 
-padding，calc覆盖原来高度，
+padding-bottom，calc覆盖原来高度，
 
 2、fixed非完全吸底元素bottom!=0，返回顶部，侧边广告等
 
