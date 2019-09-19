@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible"
+        content="ie=edge">
+    <title>Dark Mode</title>
+    <meta name="color-scheme"
+        value="light dark" />
+    <style>
+        :root {
+            --bg-color: white;
+            --font-color: black;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: black;
+                --font-color: white;
+            }
+        }
+
+        html {
+            background-color: var(--bg-color);
+            color: var(--font-color);
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        use color-schme let engine know both modes are supported!
+    </div>
+    <picture>
+        <source srcset="./imgs/black.jpg"
+            media="(prefers-color-scheme:dark)">
+        <img src="./imgs//white.jpg">
+    </picture>
+</body>
+
+</html>
