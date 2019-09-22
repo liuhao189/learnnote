@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible"
+        content="ie=edge">
+    <title>Functional Program</title>
+    <script>
+        {
+            class Point {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                }
+
+                moveBy(dx, dy) {
+                    return new Point(this.x + dx, this.y + dy)
+                }
+            }
+
+            let pOne = new Point(1, 1);
+            let pTwo = pOne.moveBy(2, 3);
+            console.log(pTwo)
+        }
+
+        {
+            function sumInts(a, b) {
+                if (a > b) return 0;
+                return a + sumInts(a + 1, b);
+            }
+
+            function sumCubes(a, b) {
+                if (a > b) return 0;
+                return Math.pow(a, 3) + sumCubes(a + 1, b);
+            }
+
+            function fact(n) {
+                if (n === 0) return 1;
+                return fact(n - 1) * n;
+            }
+
+            function sumFact(a, b) {
+                if (a > b) return 0;
+                return fact(a) + sumFact(a + 1, b);
+            }
+
+            function sumFns(fn, a, b) {
+                if (a > b) return 0;
+                return fn(a) + fn(a + 1, b)
+            }
+        }
+        //
+        {
+            let list = [1, 2, 3, 4];
+
+            let newList = list.map((x) => x * 2);
+
+            console.log(newList)
+        }
+        //
+        {
+            let arr = new Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+            let newArr = arr.map((x, inx) => { return inx + 1; });
+            let init = 1;
+            let res = newArr.reduce((prevRes, val, inx) => {
+                return prevRes * val;
+            }, init)
+        }
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
