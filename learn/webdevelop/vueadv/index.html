@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible"
+        content="ie=edge">
+    <title>Vue adv</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <cus-comp class="cus-comp"
+            :index="index"
+            style="display: block;background-color:#ddd;"
+            data-name="propDemo">
+        </cus-comp>
+    </div>
+    <script>
+        Vue.component('cus-comp', {
+            inheritAttrs: false,
+            props: {
+                // index: {
+                //     type: Number,
+                //     required: true
+                // }
+            },
+            created() {
+                console.log(this.$attrs);
+            },
+            template: '<div>I am cus comp!---{{$attrs.index}}</div>'
+        });
+        let vm = new Vue({
+            data: function () {
+                return {
+                    index: 1
+                }
+            },
+            el: '#app',
+            created() {
+                setInterval(() => {
+                    this.index = this.index + 1;
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+
+</html>
