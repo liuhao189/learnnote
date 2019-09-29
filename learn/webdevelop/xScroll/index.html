@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible"
+        content="ie=edge">
+    <title>XScroll</title>
+    <script src="./xscroll.min.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .list li {
+            color: black;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div class="xs-container">
+            <ul class="xs-content list"></ul>
+        </div>
+    </div>
+    <script>
+        let count = 200;
+        let html = '';
+        for (let i = 0; i < count; ++i) {
+            html += `<li>${i}</li>`;
+        }
+        let listEl = document.querySelector('.list');
+        listEl.innerHTML = html;
+        setTimeout(() => {
+            let xscroll = new XScroll({
+                renderTo: '#container',
+                scrollbarX: false,
+                lockX: true
+            });
+            xscroll.render();
+        }, 0);
+    </script>
+</body>
+
+</html>

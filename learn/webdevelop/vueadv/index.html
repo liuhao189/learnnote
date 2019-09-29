@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible"
         content="ie=edge">
     <title>Vue adv</title>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
     <style>
         * {
             padding: 0;
@@ -19,39 +19,110 @@
 
 <body>
     <div id="app">
-        <cus-comp class="cus-comp"
+        <!-- <cus-comp class="cus-comp"
             :index="index"
             style="display: block;background-color:#ddd;"
             data-name="propDemo">
-        </cus-comp>
+        </cus-comp> -->
+        <base-input placeholder="Test $listeners"
+            @blur="checkInput"
+            v-model="val"
+            data-name="txtTest"></base-input>
+        <sync-test v-bind.sync="me"></sync-test>
+        <p>{{me.name}},{{me.age}}</p>
     </div>
+    <script type="text/x-template"
+        id="baseInputTemplate">
+        <label>
+            {{label}}
+            <input v-bind="$attrs"
+            :value="value"
+            v-on="inputListeners">
+        </label>
+    </script>
+    <script type="text/x-template"
+        id="syncTest">
+        <div>
+           Name: <input v-model="name" @change="nameChanged"/>
+           <br/>
+           Age: <input v-model="age" @change="ageChanged"/>
+        </div>
+    </script>
     <script>
-        Vue.component('cus-comp', {
-            inheritAttrs: false,
-            props: {
-                // index: {
-                //     type: Number,
-                //     required: true
-                // }
-            },
-            created() {
-                console.log(this.$attrs);
-            },
-            template: '<div>I am cus comp!---{{$attrs.index}}</div>'
-        });
-        let vm = new Vue({
-            data: function () {
-                return {
-                    index: 1
+        Vue.component('sync-test', {
+            template: '#syncTest',
+            props: ['name', 'age'],
+            methods: {
+                nameChanged(ev) {
+                    this.$emit("update:name", ev.target.value);
+                },
+                ageChanged(ev) {
+                    this.$emit('update:age', ev.target.value);
                 }
-            },
-            el: '#app',
-            created() {
-                setInterval(() => {
-                    this.index = this.index + 1;
-                }, 1000);
+            }
+        })
+        Vue.component('base-input', {
+            template: "#baseInputTemplate",
+            props: ['label', 'value'],
+            computed: {
+                inputListeners: function () {
+                    let vm = this;
+                    return Object.assign({}, this.$listeners, {
+                        input: function (ev) {
+                            vm.$emit('input', event.target.value);
+                        }
+                    })
+                }
             }
         });
+        let vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    val: '110',
+                    me: {
+                        name: 'liuhao',
+                        age: 18
+                    }
+                }
+            },
+            methods: {
+                checkInput(ev) {
+                    let newVal = this.val;
+                    if (/^\d*$/.test(newVal)) {
+                        alert('只能输入数字')
+                    }
+                }
+            }
+        })
+    </script>
+    <script>
+        // Vue.component('cus-comp', {
+        //     inheritAttrs: false,
+        //     props: {
+        //         // index: {
+        //         //     type: Number,
+        //         //     required: true
+        //         // }
+        //     },
+        //     created() {
+        //         console.log(this.$attrs);
+        //     },
+        //     template: '<div>I am cus comp!---{{$attrs.index}}</div>'
+        // });
+        // let vm = new Vue({
+        //     data: function () {
+        //         return {
+        //             index: 1
+        //         }
+        //     },
+        //     el: '#app',
+        //     created() {
+        //         setInterval(() => {
+        //             this.index = this.index + 1;
+        //         }, 1000);
+        //     }
+        // });
     </script>
 </body>
 
