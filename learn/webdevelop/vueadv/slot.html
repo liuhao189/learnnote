@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible"
+        content="ie=edge">
+    <title>Vue adv</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <slot-one :url="url"
+            :desc="webDesc">
+        </slot-one>
+    </div>
+    <script id="slotOne"
+        type="text/x-template">
+        <div>
+            <p>Nav to <a :href="url" target="_blank">url</a></p>
+           <slot><p>{{desc}}</p></slot>
+        <div>
+    </script>
+    <script>
+        Vue.component('slot-one', {
+            template: `#slotOne`,
+            props: ['url', 'desc']
+        })
+        let vm = new Vue({
+            el: '#app',
+            data: function () {
+                return {
+                    url: '//cn.bing.com/',
+                    webDesc: 'a search engine'
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
