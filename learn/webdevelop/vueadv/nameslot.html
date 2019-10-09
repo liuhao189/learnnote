@@ -19,25 +19,38 @@
 
 <body>
     <div id="app">
-        <slot-one :url="url"
+        <base-layout :url="url"
             :desc="webDesc">
-            <template v-slot>
-                <p>Replace with this! v-solt can only use with template tag!</p>
+            <template v-slot:header>
+                <h1>Header</h1>
             </template>
-        </slot-one>
+            <p>Content!</p>
+            <p>Content line two!</p>
+            <template v-slot:footer>
+                <p>Footer!!</p>
+            </template>
+        </base-layout>
     </div>
     <script id="slotOne"
         type="text/x-template">
-        <div>
-        <p>Nav to <a :href="url" target="_blank">{{url}}</a>
-        </p>
-        <slot>
-                <p>{{desc}}</p>
-        </slot>
-        </div>
+     <div>
+         <header>
+             <slot name="header">
+                 <h1>Default Header</h1>
+             </slot>
+         </header>
+         <main>
+             <slot>Default content!</slot>
+         </main>
+         <footer>
+             <slot name="footer">
+                 <p>footer goes here!</p>
+             </slot>
+         </footer>
+     </div>
     </script>
     <script>
-        Vue.component('slot-one', {
+        Vue.component('base-layout', {
             template: `#slotOne`,
             props: ['url', 'desc']
         })
