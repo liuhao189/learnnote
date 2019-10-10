@@ -66,8 +66,12 @@ Vue实现了一套内容分发的API，这套API的设计灵感源自Web Compone
 
 一个不带name的slot会带有隐含的名字default。
 
-在向具名插槽提供内容的时候，可以在一个template元素上使用v-slot指令，并以vb-slot的参数的形式提供其名称。
+在向具名插槽提供内容的时候，可以在一个template元素上使用v-slot指令，并以v-slot的参数的形式提供其名称。
 
-任何没有被包挂在带有v-slot的template中的内容都会被视为默认插槽的内容。
+任何没有被包裹在带有v-slot的template中的内容都会被视为默认插槽的内容。
 
-v-slot只能添加再一个template上。
+v-slot只能添加在template上。
+
+# 作用域插槽
+
+有时让插槽内容能够访问子组件中采用的数据是很有用的。
