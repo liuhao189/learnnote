@@ -31,3 +31,33 @@ var twoSum = function(nums, target) {
     return result;
 };
 ```
+# 整数反转
+
+给出一个 32 位的有符号整数，你需要将这个整数中每位上的数字进行反转。
+
+输入: 123，输出: 321
+
+输入: -123，输出: -321
+
+输入: 120，输出: 21
+
+```js
+var reverse = function(x) {
+    let belowZero=x<0;
+    let xStr=x.toString();
+    if(xStr.length===1) return x;
+    if(xStr.length===2 && belowZero) return x;
+    let startNum=belowZero?1:0;
+    let numArr=xStr.split('');
+    for(let startInx=startNum,endInx=xStr.length-1;startInx<endInx;startInx++,endInx--){
+        let temp=numArr[startInx];
+        numArr[startInx]=numArr[endInx];
+        numArr[endInx]=temp;
+    }
+    let resultNum= Number.parseInt(numArr.join(''));
+    if(resultNum>(Math.pow(2,31)-1)|| resultNum<(0-Math.pow(2,31))){
+        return 0;
+    }
+    return resultNum;
+};
+```
