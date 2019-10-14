@@ -4,8 +4,6 @@
 
 你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。
 
-https://leetcode-cn.com/problems/two-sum/
-
 ```js
 // nums = [2, 7, 11, 15], target = 9
 // result [0, 1]
@@ -59,5 +57,39 @@ var reverse = function(x) {
         return 0;
     }
     return resultNum;
+};
+```
+
+## 回文子串
+
+判断一个整数是否是回文数。回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。
+
+输入: 121
+输出: true 
+
+输入: -121
+输出: false
+解释: 从左向右读, 为 -121 。 从右向左读, 为 121- 。因此它不是一个回文数。
+
+输入: 10
+输出: false
+解释: 从右向左读, 为 01 。因此它不是一个回文数。
+
+```js
+var isPalindrome = function(x) {
+    if(typeof x!=='number') return false;
+    if(x<0) return false;
+    let xStr=x.toString && x.toString()||'';
+    let strLen=xStr.length;
+    let result=true;
+    for(let i=0,j=strLen-1;i<j;++i,--j){
+        let leftChar=xStr.charAt(i);
+        let rightChar=xStr.charAt(j);
+        if(leftChar!==rightChar){
+            result=false;
+            break;
+        }
+    }
+    return result;
 };
 ```
