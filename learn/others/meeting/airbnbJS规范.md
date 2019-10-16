@@ -39,7 +39,7 @@ eslint: no-prototype-builtins.
 console.log(Object.prototype.hasOwnProperty.call(obj,key))
 ```
 
-8、Perfer the object spread operator over Object.assign() to shallow-copy objects.Use thr object rest operator to get a new object with certain properties omitted.
+8、Perfer the object spread operator over Object.assign() to shallow-copy objects.Use the object rest operator to get a new object with certain properties omitted.
 
 # Arrays
 
@@ -49,52 +49,16 @@ console.log(Object.prototype.hasOwnProperty.call(obj,key))
 
 3、Use array spreads ... to copy arrays.
 
-4、To convert an iterable object to an array, use spreads ... instrad of Array.from.
+4、To convert an iterable object to an array, use spreads ... instead of Array.from.
 
 5、Use Array.form for converting an array-like object to an array.
 
 6、Use Array.from instead of spread ... for mapping over iterables, because it avoids creating an intermediate array.
+使用Array.from的第二个参数。
 
 7、Use return statements in array method callbacks. It is ok to omit the return if the function body consists of a single statement returning an expression without side effects eslint: array-callback-return.
 
 8、Use line breaks after open and before close array brakets if an array has multiple lines.
 
-```js
-var romanToInt = function(s) {
-    if(!s || !s.length) return;
-    let specialNumMap={
-        'IV':4,
-        'IX':9,
-        'XL':40,
-        'XC':90,
-        'CD':400,
-        'CM':900
-    }
-    let numMap={
-        'I':1,
-        'V':5,
-        'X':10,
-        'L':50,
-        'C':100,
-        'D':500,
-        'M':1000
-    }
-    let sum=0;
-    for(let i=0;i<=s.length-1;++i){
-        let currChar=s.charAt(i);
-        if(i+1<s.length){
-            let nextChar=s.charAt(i+1)   
-            let specialStr=currChar+nextChar;
-            if(specialNumMap[specialStr]){
-                sum+=specialNumMap[specialStr];
-                ++i;
-            }else{
-               sum+=    numMap[currChar];
-            }
-            continue;
-        }
-            sum+=numMap[currChar];
-    }
-    return sum;
-};
-```
+https://github.com/linpenghui958/note/blob/master/js代码规范.md
+
