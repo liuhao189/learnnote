@@ -76,4 +76,4 @@ v-slot只能添加在template上。
 
 有时让插槽内容能够访问子组件中采用的数据是很有用的。
 
-## https://zhuanlan.zhihu.com/p/33848899
+## 
